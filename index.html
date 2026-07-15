@@ -6,15 +6,37 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div id="cinematicIntro" class="cinematic-intro" role="button" tabindex="0" aria-label="Skip intro">
+  <div class="cinematic-gold"></div>
+  <div class="cinematic-vignette"></div>
+  <div class="cinematic-content">
+    <div class="cinematic-brand">THE SIGN LOUNGE</div>
+    <div class="cinematic-divider"></div>
+    <div class="cinematic-ai">AI BARTENDER</div>
+    <div class="cinematic-tagline">Find your perfect drink</div>
+  </div>
+  <div class="cinematic-skip">Tap anywhere to enter</div>
+</div>
+
 <header>
-  <button class="brand" data-go="home"><span class="logo">S</span><span><b>The Sign</b><small data-i18n="brandSub">AI Cocktail Experience</small></span></button>
+  <button class="brand" data-go="home"><img class="logo-mark" src="logo.png" alt="The Sign"><span><b>The Sign</b><small data-i18n="brandSub">AI Cocktail Experience</small></span></button>
   <nav>
     <button data-go="ai" data-i18n="navAI">AI Bartender</button>
     <button data-go="menu" data-i18n="navMenu">Full Menu</button>
     <button data-go="rituals" data-i18n="navRituals">Rituals</button><a href="hydration.html">Hydration</a><a href="party.html">Party</a>
   </nav>
-  <button id="lang" class="pill">DE</button>
+  <div class="header-actions">
+    <button id="lang" class="pill">DE</button>
+    <button id="navToggle" class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
 </header>
+<div id="mobileNav" class="mobile-nav">
+  <button data-go="ai" data-i18n="navAI">AI Bartender</button>
+  <button data-go="menu" data-i18n="navMenu">Full Menu</button>
+  <button data-go="rituals" data-i18n="navRituals">Rituals</button>
+  <a href="hydration.html">Hydration</a>
+  <a href="party.html">Party</a>
+</div>
 
 <main>
 <section id="home" class="hero">
@@ -118,4 +140,6 @@
 <script src="menu-data.js"></script>
 <script src="shared.js"></script>
 <script src="app.js"></script>
+
+<script src="intro.js"></script>
 </body></html>

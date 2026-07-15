@@ -30,3 +30,27 @@ IMPORTANT:
 This password gate protects against casual access, but because this is a fully local/static website,
 it is not equivalent to server-side security. For a public online launch, use server login and a cloud
 database so the password and admin code are never exposed to visitors.
+
+
+V4.2 CINEMATIC INTRO
+- Full-screen black opening.
+- Slowly flowing champagne-gold gradient.
+- THE SIGN LOUNGE fades in first.
+- AI BARTENDER and Find your perfect drink follow.
+- Automatically enters the homepage after about 2 seconds.
+- Click/tap anywhere, press Enter, Space or Escape to skip immediately.
+
+RESTORE ORIGINAL
+The untouched V4.1 files are stored in:
+ORIGINAL_BACKUP_V4_1/
+
+
+V5 LUXURY EDITION
+- Built directly from the successful V4.2 version.
+- Keeps the original V4.2 header and typography.
+- Intro remains visible for 5 seconds, then slowly fades out.
+- No permanent homepage logo image.
+- Adds only a very subtle cocktail-glass watermark.
+- Flower Bomb signature card is significantly shorter on mobile.
+- Mobile spacing and controls are optimized so more content appears above the fold.
+- Full V4.2 backup is included in ORIGINAL_BACKUP_V4_2.

@@ -40,6 +40,11 @@ quiz.addEventListener('submit',e=>{e.preventDefault();recommend()});another.addE
 filters.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;currentCategory=b.dataset.cat;renderFilters();renderMenu()});
 search.addEventListener('input',renderMenu);grid.addEventListener('click',e=>{const b=e.target.closest('[data-name]');if(b)addToCart(b.dataset.name)});
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.go).scrollIntoView({behavior:'smooth'})));
+const navToggle=document.getElementById('navToggle'),mobileNav=document.getElementById('mobileNav');
+if(navToggle&&mobileNav){
+ navToggle.addEventListener('click',()=>{const open=mobileNav.classList.toggle('open');navToggle.classList.toggle('open',open);navToggle.setAttribute('aria-expanded',open)});
+ mobileNav.querySelectorAll('button,a').forEach(el=>el.addEventListener('click',()=>{mobileNav.classList.remove('open');navToggle.classList.remove('open');navToggle.setAttribute('aria-expanded',false)}));
+}
 document.querySelectorAll('[data-mood]').forEach(b=>b.addEventListener('click',()=>{const r=document.querySelector(`input[name="mood"][value="${b.dataset.mood}"]`);if(r)r.checked=true;document.getElementById('ai').scrollIntoView({behavior:'smooth'})}));
 cartFab.addEventListener('click',()=>cart.classList.add('open'));closeCart.addEventListener('click',()=>cart.classList.remove('open'));
 document.getElementById('lang').addEventListener('click',()=>{lang=lang==='en'?'de':'en';setActiveLang(lang);applyLanguage()});
