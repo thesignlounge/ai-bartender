@@ -56,9 +56,8 @@
     </div>
   </div>
   <div class="feature">
-    <div class="glass"><i></i><b></b><em></em></div>
-    <p data-i18n="tonightSignature">Tonight's signature</p><h2>Flower Bomb</h2>
-    <span data-i18n="flowerBombSub">Elderflower · Tequila · Agave · Umami</span><strong>€14</strong>
+    <p class="eyebrow" data-i18n="featureEyebrow">AI-matched, just for you</p><h2 data-i18n="featureTitle">Your perfect drink, found in seconds.</h2>
+    <span data-i18n="featureSub">Tell us your mood — the rest is on us.</span>
   </div>
 </section>
 
@@ -133,9 +132,10 @@
 <aside id="cart" class="cart">
   <button id="closeCart">×</button><h2 data-i18n="yourOrder">Your Order</h2>
   <div id="cartItems"></div><div class="cart-total"><span data-i18n="total">Total</span><strong id="cartTotal">€0</strong></div>
-  <button class="primary full" data-i18n="sendStaff">Send to staff</button>
+  <p class="cart-hint" data-i18n="cartHint">Show this screen to the bartender to order and pay.</p>
+  <button class="primary full" id="confirmOrder" data-i18n="sendStaff">Got it</button>
 </aside>
-<button id="cartFab" class="cart-fab"><span data-i18n="order">Order</span> <span id="cartCount">0</span></button>
+<button id="cartFab" class="cart-fab">🛒 <span data-i18n="order">My Order</span> (<span id="cartCount">0</span>)</button>
 <div id="toast" class="toast"></div>
 <script src="menu-data.js"></script>
 <script src="shared.js"></script>
