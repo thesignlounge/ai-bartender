@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Party — The Sign</title><link rel="stylesheet" href="style.css"></head>
+<body class="page-shell">
+<header><a class="brand" href="index.html"><img class="logo-mark" src="logo.png" alt="The Sign"><span><b>The Sign</b><small>AI Cocktail Experience</small></span></a>
+<div class="nav-links"><a href="index.html">AI Menu</a><a href="hydration.html">Hydration</a><a href="party.html">Party</a></div>
+<button id="langBtn" class="pill">DE</button></header>
+<section class="page-hero"><p class="eyebrow">PARTY · HIGHBALLS · GIN & TONIC · SHOTS</p><h1 id="pageTitle"></h1><p id="pageLead"></p></section>
+<section id="pageGrid" class="page-grid"></section>
+
+<script src="menu-data.js"></script><script src="shared.js"></script>
+<script>
+let data=loadMenuData(),lang=activeLang();
+const ids=data.party_ids;
+function render(){
+ document.documentElement.lang=lang;
+ langBtn.textContent=lang==='en'?'DE':'EN';
+ pageTitle.textContent=lang==='en'?data.settings.partyPageTitle_en:data.settings.partyPageTitle_de;
+ pageLead.textContent=lang==='en'?'Party drinks, highballs, gin & tonic and shots in one dedicated page.':'Party-Drinks, Highballs, Gin & Tonic und Shots auf einer eigenen Seite.';
+ const drinks=ids.map(id=>data.drinks.find(d=>d.id===id)).filter(Boolean).filter(d=>d.visible!==false).sort(bySort);
+ pageGrid.innerHTML=drinks.map(d=>`<article class="special-card"><span class="cat">${lang==='de'?d.category_de:d.category}</span><span class="price">${euro(d.price)}</span><h3>${d.name}</h3><p>${lang==='de'?d.desc_de:d.desc}</p><div class="tags">${(lang==='de'?d.tags_de:d.tags).map(t=>`<span>${t}</span>`).join('')}</div></article>`).join('');
+ 
+}
+langBtn.onclick=()=>{lang=lang==='en'?'de':'en';setActiveLang(lang);render()};
+window.addEventListener('storage',()=>{data=loadMenuData();render()});
+render();
+</script></body></html>
