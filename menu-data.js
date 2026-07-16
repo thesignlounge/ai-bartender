@@ -1,5 +1,5 @@
 window.MENU_SEED = {
-  "version": 1,
+  "version": 2,
   "settings": {
     "language": "en",
     "discounts": [
@@ -77,7 +77,9 @@ window.MENU_SEED = {
       ],
       "id": "drink-001",
       "visible": true,
-      "sort": 1
+      "sort": 1,
+      "alcoholLevel": 0,
+      "baseSpirits": []
     },
     {
       "name": "Yuzu Collins",
@@ -107,7 +109,9 @@ window.MENU_SEED = {
       ],
       "id": "drink-002",
       "visible": true,
-      "sort": 2
+      "sort": 2,
+      "alcoholLevel": 0,
+      "baseSpirits": []
     },
     {
       "name": "Citrus Vibe",
@@ -137,7 +141,9 @@ window.MENU_SEED = {
       ],
       "id": "drink-003",
       "visible": true,
-      "sort": 3
+      "sort": 3,
+      "alcoholLevel": 0,
+      "baseSpirits": []
     },
     {
       "name": "Non Hypnose",
@@ -167,7 +173,9 @@ window.MENU_SEED = {
       ],
       "id": "drink-004",
       "visible": true,
-      "sort": 4
+      "sort": 4,
+      "alcoholLevel": 0,
+      "baseSpirits": []
     },
     {
       "name": "Insolence Zero",
@@ -197,7 +205,9 @@ window.MENU_SEED = {
       ],
       "id": "drink-005",
       "visible": true,
-      "sort": 5
+      "sort": 5,
+      "alcoholLevel": 0,
+      "baseSpirits": []
     },
     {
       "name": "Oolong Long",
@@ -227,7 +237,9 @@ window.MENU_SEED = {
       ],
       "id": "drink-006",
       "visible": true,
-      "sort": 6
+      "sort": 6,
+      "alcoholLevel": 0,
+      "baseSpirits": []
     },
     {
       "name": "Hypnose",
@@ -255,7 +267,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-007",
       "visible": true,
-      "sort": 7
+      "sort": 7,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Passion Amaretto Punch",
@@ -285,7 +301,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-008",
       "visible": true,
-      "sort": 8
+      "sort": 8,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "rum",
+        "liqueur"
+      ]
     },
     {
       "name": "Lemon Tart Martini",
@@ -315,7 +336,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-009",
       "visible": true,
-      "sort": 9
+      "sort": 9,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Tingy Tongue",
@@ -345,7 +370,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-010",
       "visible": true,
-      "sort": 10
+      "sort": 10,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "rum"
+      ]
     },
     {
       "name": "Melon Kiss",
@@ -375,7 +404,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-011",
       "visible": true,
-      "sort": 11
+      "sort": 11,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "gin",
+        "liqueur"
+      ]
     },
     {
       "name": "Orgasm Egg Highball",
@@ -405,7 +439,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-012",
       "visible": true,
-      "sort": 12
+      "sort": 12,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Kinky Mango Daiquiri",
@@ -435,7 +473,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-013",
       "visible": true,
-      "sort": 13
+      "sort": 13,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "rum"
+      ]
     },
     {
       "name": "Spicy Barbara Margarita",
@@ -465,7 +507,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-014",
       "visible": true,
-      "sort": 14
+      "sort": 14,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "tequila",
+        "mezcal"
+      ]
     },
     {
       "name": "Hottie Spotty Margarita",
@@ -495,7 +542,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-015",
       "visible": true,
-      "sort": 15
+      "sort": 15,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "tequila",
+        "mezcal"
+      ]
     },
     {
       "name": "Ghost Basil Smash",
@@ -525,7 +577,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-016",
       "visible": true,
-      "sort": 16
+      "sort": 16,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Earl Grey Basil Smash",
@@ -555,7 +611,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-017",
       "visible": true,
-      "sort": 17
+      "sort": 17,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Basil Oil Gimlet",
@@ -585,7 +645,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-018",
       "visible": true,
-      "sort": 18
+      "sort": 18,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Earl Grey Basil Omkase",
@@ -615,7 +679,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-019",
       "visible": true,
-      "sort": 19
+      "sort": 19,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Tropical Dry Daiquiri",
@@ -645,7 +713,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-020",
       "visible": true,
-      "sort": 20
+      "sort": 20,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "rum"
+      ]
     },
     {
       "name": "Szechuan Pepper Daiquiri",
@@ -675,7 +747,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-021",
       "visible": true,
-      "sort": 21
+      "sort": 21,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "rum"
+      ]
     },
     {
       "name": "Trinidad Sour Classic",
@@ -705,7 +781,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-022",
       "visible": true,
-      "sort": 22
+      "sort": 22,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "rum",
+        "liqueur"
+      ]
     },
     {
       "name": "Old New World Fashioned",
@@ -735,7 +816,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-023",
       "visible": true,
-      "sort": 23
+      "sort": 23,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "rum",
+        "liqueur"
+      ]
     },
     {
       "name": "Liquid Fluffy Tiramisu",
@@ -765,7 +851,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-024",
       "visible": true,
-      "sort": 24
+      "sort": 24,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "rum",
+        "liqueur"
+      ]
     },
     {
       "name": "Flower Bomb",
@@ -795,7 +886,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-025",
       "visible": true,
-      "sort": 25
+      "sort": 25,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "tequila",
+        "liqueur"
+      ]
     },
     {
       "name": "Peach Rose Garibaldi",
@@ -825,7 +921,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-026",
       "visible": true,
-      "sort": 26
+      "sort": 26,
+      "alcoholLevel": 1,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Seasonal Appletini",
@@ -855,7 +955,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-027",
       "visible": true,
-      "sort": 27
+      "sort": 27,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "vodka"
+      ]
     },
     {
       "name": "Golden Boy Martini",
@@ -885,7 +989,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-028",
       "visible": true,
-      "sort": 28
+      "sort": 28,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "brandy"
+      ]
     },
     {
       "name": "Yuzu Negroni",
@@ -915,7 +1023,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-029",
       "visible": true,
-      "sort": 29
+      "sort": 29,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "gin",
+        "liqueur"
+      ]
     },
     {
       "name": "Negroni Punch",
@@ -945,7 +1058,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-030",
       "visible": true,
-      "sort": 30
+      "sort": 30,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "10 Miles Negroni",
@@ -975,7 +1092,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-031",
       "visible": true,
-      "sort": 31
+      "sort": 31,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Pornstar Spritz",
@@ -1005,7 +1126,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-032",
       "visible": true,
-      "sort": 32
+      "sort": 32,
+      "alcoholLevel": 1,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Gin Basil Spritz",
@@ -1035,7 +1160,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-033",
       "visible": true,
-      "sort": 33
+      "sort": 33,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Perfect Bellini",
@@ -1065,7 +1194,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-034",
       "visible": true,
-      "sort": 34
+      "sort": 34,
+      "alcoholLevel": 1,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Forbidden Sour",
@@ -1095,7 +1228,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-035",
       "visible": true,
-      "sort": 35
+      "sort": 35,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "whiskey"
+      ]
     },
     {
       "name": "Espresso Martini",
@@ -1125,7 +1262,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-036",
       "visible": true,
-      "sort": 36
+      "sort": 36,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "vodka"
+      ]
     },
     {
       "name": "Disco Insolence",
@@ -1155,7 +1296,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-037",
       "visible": true,
-      "sort": 37
+      "sort": 37,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Paloma Standard",
@@ -1185,7 +1330,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-038",
       "visible": true,
-      "sort": 38
+      "sort": 38,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "tequila"
+      ]
     },
     {
       "name": "Paloma Premium",
@@ -1215,7 +1364,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-039",
       "visible": true,
-      "sort": 39
+      "sort": 39,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "tequila"
+      ]
     },
     {
       "name": "Skinny Bitch",
@@ -1245,7 +1398,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-040",
       "visible": true,
-      "sort": 40
+      "sort": 40,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "vodka"
+      ]
     },
     {
       "name": "Bubble Boilermaker",
@@ -1274,7 +1431,12 @@ window.MENU_SEED = {
       ],
       "id": "drink-041",
       "visible": true,
-      "sort": 41
+      "sort": 41,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "tequila",
+        "mezcal"
+      ]
     },
     {
       "name": "Gin & Tonic Premium",
@@ -1304,7 +1466,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-042",
       "visible": true,
-      "sort": 42
+      "sort": 42,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Mezcal Mule",
@@ -1334,7 +1500,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-043",
       "visible": true,
-      "sort": 43
+      "sort": 43,
+      "alcoholLevel": 4,
+      "baseSpirits": [
+        "mezcal"
+      ]
     },
     {
       "name": "Gin Mule",
@@ -1364,7 +1534,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-044",
       "visible": true,
-      "sort": 44
+      "sort": 44,
+      "alcoholLevel": 2,
+      "baseSpirits": [
+        "gin"
+      ]
     },
     {
       "name": "Vienna Tradition",
@@ -1393,7 +1567,9 @@ window.MENU_SEED = {
       ],
       "id": "drink-045",
       "visible": true,
-      "sort": 45
+      "sort": 45,
+      "alcoholLevel": 1,
+      "baseSpirits": []
     },
     {
       "name": "Super Cattivo Aperol Spritz",
@@ -1423,7 +1599,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-046",
       "visible": true,
-      "sort": 46
+      "sort": 46,
+      "alcoholLevel": 1,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Super Cattivo Campari Spritz",
@@ -1453,7 +1633,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-047",
       "visible": true,
-      "sort": 47
+      "sort": 47,
+      "alcoholLevel": 1,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Super Cattivo Bergamot Spritz",
@@ -1483,7 +1667,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-048",
       "visible": true,
-      "sort": 48
+      "sort": 48,
+      "alcoholLevel": 1,
+      "baseSpirits": [
+        "liqueur"
+      ]
     },
     {
       "name": "Basil Limoncello Spritz",
@@ -1513,7 +1701,11 @@ window.MENU_SEED = {
       ],
       "id": "drink-049",
       "visible": true,
-      "sort": 49
+      "sort": 49,
+      "alcoholLevel": 1,
+      "baseSpirits": [
+        "liqueur"
+      ]
     }
   ]
 };

@@ -1,3 +1,5 @@
+THE SIGN AI MENU V8 — PHOTO READY
+
 THE SIGN AI MENU V4
 
 Pages
@@ -54,3 +56,18 @@ V5 LUXURY EDITION
 - Flower Bomb signature card is significantly shorter on mobile.
 - Mobile spacing and controls are optimized so more content appears above the fold.
 - Full V4.2 backup is included in ORIGINAL_BACKUP_V4_2.
+
+
+V8 PHOTO SYSTEM
+- Recommendation card includes a large 4:3 cocktail photo area.
+- Every full-menu card includes a photo area.
+- Missing photos automatically show a subtle The Sign logo placeholder.
+- Add JPG files to images/cocktails/; no code changes are needed when filenames follow the automatic naming rule.
+- See images/cocktails/README.txt for exact instructions.
+
+V9 BUSINESS OVERVIEW UPDATE
+- Google Sheets endpoint connected.
+- Button changed to “🍸 Zur Übersicht hinzufügen”.
+- Sends every cocktail name, quantity, unit price, subtotal, alcohol level, base spirit, taste, category and language.
+- Duplicate protection for an unchanged selection in the same browser session.
+- Use GOOGLE_APPS_SCRIPT_CODE.gs to update the Google Apps Script deployment.

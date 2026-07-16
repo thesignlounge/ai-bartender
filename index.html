@@ -86,9 +86,31 @@
         </div>
       </div></div>
 
-      <div class="step"><span>03</span><div><h3 data-i18n="strength">Strength</h3>
-        <input type="range" id="strength" min="1" max="3" value="2">
-        <div class="range"><small data-i18n="easy">Easy</small><small data-i18n="balanced">Balanced</small><small data-i18n="strong">Strong</small></div>
+      <div class="step"><span>03</span><div>
+        <h3><span data-i18n="strength">Strength</span> <small class="selection-note" data-i18n="strengthHint">Choose your preferred alcohol strength</small></h3>
+        <div class="strength-cards" id="strengthChoices">
+          <label><input type="radio" name="alcoholLevel" value="0"><b><span class="glass level-0">▱</span><strong>0%</strong><small data-i18n="level0">Alcohol-free</small></b></label>
+          <label><input type="radio" name="alcoholLevel" value="1"><b><span class="glass level-1">▱</span><strong>1</strong><small data-i18n="level1">Light</small></b></label>
+          <label><input type="radio" name="alcoholLevel" value="2" checked><b><span class="glass level-2">▱</span><strong>2</strong><small data-i18n="level2">Medium</small></b></label>
+          <label><input type="radio" name="alcoholLevel" value="3"><b><span class="glass level-3">▱</span><strong>3</strong><small data-i18n="level3">Strong</small></b></label>
+          <label><input type="radio" name="alcoholLevel" value="4"><b><span class="glass level-4">▱</span><strong>4</strong><small data-i18n="level4">Very strong</small></b></label>
+        </div>
+      </div></div>
+
+      <div class="step"><span>04</span><div>
+        <h3><span data-i18n="baseSpirit">Base spirit</span> <small class="selection-note" data-i18n="baseHint">Choose the spirit as a base</small></h3>
+        <div class="spirit-cards" id="spiritChoices">
+          <label><input type="radio" name="baseSpirit" value="any" checked><b><span>✦</span><small data-i18n="anySpirit">Surprise me</small></b></label>
+          <label><input type="radio" name="baseSpirit" value="gin"><b><span>❉</span><small>Gin</small></b></label>
+          <label><input type="radio" name="baseSpirit" value="rum"><b><span>♜</span><small>Rum</small></b></label>
+          <label><input type="radio" name="baseSpirit" value="vodka"><b><span>♢</span><small>Vodka</small></b></label>
+          <label><input type="radio" name="baseSpirit" value="whiskey"><b><span>▤</span><small>Whiskey</small></b></label>
+          <label><input type="radio" name="baseSpirit" value="tequila"><b><span>✺</span><small>Tequila</small></b></label>
+          <label><input type="radio" name="baseSpirit" value="mezcal"><b><span>♨</span><small>Mezcal</small></b></label>
+          <label><input type="radio" name="baseSpirit" value="brandy"><b><span>♧</span><small>Brandy</small></b></label>
+          <label><input type="radio" name="baseSpirit" value="liqueur"><b><span>♙</span><small data-i18n="liqueur">Liqueur</small></b></label>
+        </div>
+        <p id="matchNote" class="match-note" aria-live="polite"></p>
       </div></div>
 
       <button class="primary full" type="submit" data-i18n="recommend">Recommend my cocktail</button>
@@ -97,7 +119,15 @@
     <aside class="result">
       <div class="match"><span data-i18n="aiMatch">AI MATCH</span> · <span id="match">96%</span></div>
       <p class="eyebrow" data-i18n="yourRec">YOUR RECOMMENDATION</p>
-      <h3 id="recName"></h3><p id="recDesc"></p>
+      <h3 id="recName"></h3>
+      <div class="cocktail-photo recommendation-photo" id="recPhotoWrap">
+        <img id="recPhoto" alt="" loading="eager">
+        <div class="photo-placeholder" aria-hidden="true">
+          <img src="logo.png" alt="">
+          <span data-i18n="photoComing">Cocktail photo coming soon</span>
+        </div>
+      </div>
+      <p id="recDesc"></p>
       <div id="bars" class="bars"></div>
       <div class="result-bottom"><strong id="recPrice"></strong><button class="secondary" id="another" type="button" data-i18n="another">Show another</button></div>
       <button class="order" id="orderBtn" type="button" data-i18n="addOrder">Add to order</button>
@@ -127,10 +157,10 @@
 </main>
 
 <aside id="cart" class="cart">
-  <button id="closeCart">×</button><h2 data-i18n="yourOrder">Your Order</h2>
+  <button id="closeCart">×</button><h2 data-i18n="yourOrder">Your Selection</h2>
   <div id="cartItems"></div><div class="cart-total"><span data-i18n="total">Total</span><strong id="cartTotal">€0</strong></div>
-  <p class="cart-hint" data-i18n="cartHint">Show this screen to the bartender to order and pay.</p>
-  <button class="primary full" id="confirmOrder" data-i18n="sendStaff">Got it</button>
+  <p class="cart-hint" data-i18n="cartHint">This only saves your selection for today’s overview. It is not an order and is not sent to the POS.</p>
+  <button class="primary full" id="confirmOrder" data-i18n="sendStaff">🍸 Add to overview</button>
 </aside>
 <button id="cartFab" class="cart-fab">🛒 <span data-i18n="order">Tonight's Picks</span> (<span id="cartCount">0</span>)</button>
 <div id="toast" class="toast"></div>

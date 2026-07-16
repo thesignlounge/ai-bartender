@@ -1,0 +1,20 @@
+THE SIGN AI MENU V9 — GOOGLE SHEETS SETUP
+
+1. Open your Google Sheet → Extensions → Apps Script.
+2. Delete the old code completely.
+3. Copy all code from GOOGLE_APPS_SCRIPT_CODE.gs into Code.gs.
+4. Save.
+5. Deploy → Manage deployments → pencil icon → choose “New version” → Deploy.
+6. Keep:
+   Execute as: Me
+   Who has access: Anyone
+7. The existing /exec URL can stay the same.
+
+The script automatically creates two tabs:
+- Auswahl-Details: one row per cocktail, including name, quantity, price, alcohol level, base spirit and taste.
+- Tagesübersicht: daily totals by cocktail.
+
+The website button is:
+🍸 Zur Übersicht hinzufügen
+
+Important: this is only a daily overview record. It is not an order and is not sent to the POS/Kasse.
