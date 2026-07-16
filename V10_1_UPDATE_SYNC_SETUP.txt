@@ -1,0 +1,16 @@
+THE SIGN AI MENU V10.1 – UPDATE SYNC
+
+1. 打开 Google Apps Script。
+2. 删除旧代码。
+3. 复制 GOOGLE_APPS_SCRIPT_CODE.gs 的全部内容进去。
+4. 保存。
+5. 部署 → 管理部署 → 铅笔 → 新版本 → 部署。
+6. 原来的 /exec 地址不需要更换。
+
+同步逻辑：
+- 第一次保存：建立固定 Referenz。
+- 增减酒或修改数量：再次点击“Änderungen speichern”，旧记录被覆盖。
+- 删掉其中一杯：Google 表格中该杯自动消失。
+- 全部删空：按钮变成“Aus Übersicht entfernen”，点击后整份记录从当前汇总移除。
+- Tagesübersicht 每次都会根据 Auswahl-Details 重新计算，避免重复累计。
+- 购物车与同步记录在同一台设备保留 6 小时。
