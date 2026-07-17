@@ -1,116 +1,151 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Sign Menu Admin</title><link rel="stylesheet" href="style.css"></head>
-<body class="admin-locked">
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Sign Admin Pro</title><link rel="stylesheet" href="style.css"></head>
+<body class="admin-v12 admin-locked">
 <div id="loginGate" class="login-gate">
   <form id="loginForm" class="login-card">
     <img class="logo-mark" src="logo.png" alt="The Sign">
-    <p class="eyebrow">THE SIGN OWNER ACCESS</p>
-    <h1>Admin Login</h1>
-    <p>Enter the owner password to manage drinks and prices.</p>
+    <p class="eyebrow">THE SIGN OWNER ACCESS</p><h1>Admin Login</h1>
+    <p>Menü, Preise und Bilder verwalten.</p>
     <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Password" required>
-    <button class="primary full" type="submit">Unlock Admin</button>
-    <p id="loginError" class="login-error"></p>
+    <button class="primary full" type="submit">Unlock Admin</button><p id="loginError" class="login-error"></p>
   </form>
 </div>
 <div id="adminApp" hidden>
-<header><a class="brand" href="index.html"><img class="logo-mark" src="logo.png" alt="The Sign"><span><b>The Sign</b><small>Menu Admin</small></span></a>
-<div class="nav-links"><a href="index.html">AI Menu</a><a href="hydration.html">Hydration</a><a href="party.html">Party</a></div></header>
-<main class="admin-shell">
-<p class="eyebrow">OWNER CONTROL PANEL</p><h1 style="font:600 clamp(48px,6vw,82px)/.95 'Cormorant Garamond';margin:0">Edit drinks and prices</h1>
-<p class="admin-note">Changes are saved immediately in this browser. Use Export to back up your menu or move it to another computer.</p>
-<div class="admin-toolbar">
-<button id="addDrink">+ Add drink</button><button id="saveAll">Save all</button><button id="exportBtn">Export JSON</button>
-<label>Import JSON<input type="file" id="importFile" accept=".json"></label><button id="resetBtn">Reset to original</button>
+<header class="admin-head"><a class="brand" href="index.html"><img class="logo-mark" src="logo.png" alt="The Sign"><span><b>The Sign</b><small>Admin Pro V12</small></span></a><a class="admin-preview" href="index.html">Menü ansehen ↗</a></header>
+<main class="admin-pro-shell">
+<section class="admin-pro-hero"><div><p class="eyebrow">OWNER CONTROL PANEL</p><h1>Digital Menu verwalten</h1><p>Produkte hinzufügen, Preise ändern, ausblenden und Bilder hinterlegen.</p></div><div class="admin-local-warning"><b>Wichtig</b><span>Änderungen gelten zunächst nur in diesem Browser. Für Gäste auf anderen Handys muss später eine zentrale Online-Datenbank verbunden werden.</span></div></section>
+
+<div class="admin-pro-toolbar">
+  <button id="addItem" class="primary">+ Neues Produkt</button>
+  <button id="saveAll">Alle speichern</button>
+  <button id="exportBtn">Backup exportieren</button>
+  <label class="file-button">Backup importieren<input type="file" id="importFile" accept=".json"></label>
+  <button id="resetBtn" class="danger-soft">Original wiederherstellen</button>
 </div>
-<div class="admin-table-wrap"><table class="admin-table">
-<thead><tr><th>Show</th><th>Order</th><th>Name</th><th>Category EN</th><th>Category DE</th><th>Price</th><th>Description EN</th><th>Description DE</th><th>Hydration</th><th>Party</th><th>Delete</th></tr></thead>
-<tbody id="rows"></tbody></table></div>
 
-<h2 style="font:600 42px 'Cormorant Garamond';margin-top:50px">Discount settings</h2>
-<div id="discountEditor"></div>
+<div class="admin-pro-filters">
+  <input id="adminSearch" type="search" placeholder="Produkt suchen…">
+  <select id="typeFilter"><option value="all">Alle Bereiche</option><option value="cocktail">Cocktails</option><option value="catalog">Drinks & Essen</option></select>
+  <select id="categoryFilter"><option value="all">Alle Kategorien</option></select>
+  <span id="itemCount"></span>
+</div>
+
+<div id="editorList" class="admin-editor-list"></div>
 </main>
-<div id="status" class="admin-status">Saved</div>
-<script src="menu-data.js"></script><script src="shared.js"></script>
-<script>
-let data=loadMenuData();
+<div id="status" class="admin-status">Gespeichert</div>
+</div>
 
-function rowTemplate(d){
- const inHydration=data.hydration_ids.includes(d.id),inParty=data.party_ids.includes(d.id);
- return `<tr data-id="${d.id}">
- <td><input class="check visible" type="checkbox" ${d.visible!==false?'checked':''}></td>
- <td><input class="small-input sort" type="number" value="${d.sort??999}"></td>
- <td><input class="name" value="${escapeHtml(d.name)}"></td>
- <td><input class="category" value="${escapeHtml(d.category||'')}"></td>
- <td><input class="category_de" value="${escapeHtml(d.category_de||'')}"></td>
- <td><input class="small-input price" type="number" step="0.1" value="${d.price}"></td>
- <td><textarea class="desc">${escapeHtml(d.desc||'')}</textarea></td>
- <td><textarea class="desc_de">${escapeHtml(d.desc_de||'')}</textarea></td>
- <td><input class="check hydration" type="checkbox" ${inHydration?'checked':''}></td>
- <td><input class="check party" type="checkbox" ${inParty?'checked':''}></td>
- <td><button class="deleteRow">Delete</button></td></tr>`;
-}
-function escapeHtml(s){return String(s).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
-function render(){
- rows.innerHTML=data.drinks.sort(bySort).map(rowTemplate).join('');
- discountEditor.innerHTML=data.settings.discounts.map((x,i)=>`<div style="display:grid;grid-template-columns:1fr 1fr 120px;gap:10px;margin:10px 0">
- <input data-discount="${i}" data-field="label_en" value="${escapeHtml(x.label_en)}"><input data-discount="${i}" data-field="label_de" value="${escapeHtml(x.label_de)}"><input data-discount="${i}" data-field="value" type="number" value="${x.value}"></div>`).join('');
-}
-function collect(){
- [...rows.querySelectorAll('tr')].forEach(tr=>{
-  const d=data.drinks.find(x=>x.id===tr.dataset.id);if(!d)return;
-  d.visible=tr.querySelector('.visible').checked;d.sort=+tr.querySelector('.sort').value;d.name=tr.querySelector('.name').value;
-  d.category=tr.querySelector('.category').value;d.category_de=tr.querySelector('.category_de').value;d.price=+tr.querySelector('.price').value;
-  d.desc=tr.querySelector('.desc').value;d.desc_de=tr.querySelector('.desc_de').value;
-  const hyd=tr.querySelector('.hydration').checked,party=tr.querySelector('.party').checked;
-  data.hydration_ids=data.hydration_ids.filter(id=>id!==d.id);if(hyd)data.hydration_ids.push(d.id);
-  data.party_ids=data.party_ids.filter(id=>id!==d.id);if(party)data.party_ids.push(d.id);
- });
- [...discountEditor.querySelectorAll('input')].forEach(inp=>{
-  const obj=data.settings.discounts[+inp.dataset.discount];obj[inp.dataset.field]=inp.dataset.field==='value'?+inp.value:inp.value;
- });
-}
-function save(){collect();saveMenuData(data);status.classList.add('show');setTimeout(()=>status.classList.remove('show'),1200)}
-saveAll.onclick=save;
-rows.addEventListener('click',e=>{const b=e.target.closest('.deleteRow');if(!b)return;const id=b.closest('tr').dataset.id;data.drinks=data.drinks.filter(d=>d.id!==id);data.hydration_ids=data.hydration_ids.filter(x=>x!==id);data.party_ids=data.party_ids.filter(x=>x!==id);render();save()});
-addDrink.onclick=()=>{const id='drink-'+Date.now();data.drinks.push({id,name:'New drink',category:'New',category_de:'Neu',price:0,desc:'',desc_de:'',tags:[],tags_de:[],moods:['fresh'],tastes:['fresh'],strength:1,visible:true,sort:999});render()};
-exportBtn.onclick=()=>{collect();const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='the-sign-menu-backup.json';a.click();URL.revokeObjectURL(a.href)};
-importFile.onchange=async()=>{const file=importFile.files[0];if(!file)return;try{const parsed=JSON.parse(await file.text());if(!parsed.drinks)throw Error();data=parsed;saveMenuData(data);render();alert('Imported')}catch{alert('Invalid JSON file')}};
-resetBtn.onclick=()=>{if(confirm('Reset all changes?')){resetMenuData();data=loadMenuData();render();saveMenuData(data)}};
-render();
-</script></div>
+<script src="menu-data.js"></script><script src="v11-data.js"></script><script src="shared.js"></script>
 <script>
 const ADMIN_PASSWORD_HASH="75db4c6d77590c809ea70760e0025eccb754294dca0f5455eacd1fd7528aad87";
 const ADMIN_SESSION_KEY="the-sign-admin-unlocked";
+let menuData=loadMenuData();
+let catalogData=loadCatalogData();
 
-async function sha256(text){
-  const bytes=new TextEncoder().encode(text);
-  const hash=await crypto.subtle.digest("SHA-256",bytes);
-  return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,"0")).join("");
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+const slug=s=>String(s||'item').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+function allRecords(){
+ return [
+  ...menuData.drinks.map(x=>({source:'cocktail',data:x})),
+  ...catalogData.map(x=>({source:'catalog',data:x}))
+ ];
 }
-
-function unlockAdmin(){
-  document.body.classList.remove("admin-locked");
-  loginGate.hidden=true;
-  adminApp.hidden=false;
+function categories(){return [...new Set(allRecords().map(x=>x.data.category).filter(Boolean))].sort()}
+function updateCategoryFilter(){
+ const selected=$('categoryFilter').value;
+ $('categoryFilter').innerHTML='<option value="all">Alle Kategorien</option>'+categories().map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+ if([...$('categoryFilter').options].some(o=>o.value===selected))$('categoryFilter').value=selected;
 }
-
-if(sessionStorage.getItem(ADMIN_SESSION_KEY)==="yes"){
-  unlockAdmin();
+function recordCard(rec){
+ const d=rec.data, isCocktail=rec.source==='cocktail';
+ const img=d.image||(isCocktail?`images/cocktails/${slug(d.name)}.jpg`:'');
+ return `<article class="admin-product" data-source="${rec.source}" data-id="${esc(d.id)}">
+  <div class="admin-product-top">
+   <div class="admin-thumb"><img src="${esc(img)}" alt="" onerror="this.style.display='none'"><span>PHOTO</span></div>
+   <div class="admin-product-title"><span class="admin-source">${isCocktail?'COCKTAIL':'MENU ITEM'}</span><h2>${esc(d.name||'Neues Produkt')}</h2><small>${esc(d.category||'Ohne Kategorie')} · ${euro(d.price||0)}</small></div>
+   <label class="admin-visible"><input class="f-visible" type="checkbox" ${d.visible!==false?'checked':''}><span>Sichtbar</span></label>
+   <button type="button" class="admin-collapse" aria-label="Öffnen">⌄</button>
+  </div>
+  <div class="admin-product-body">
+   <div class="admin-form-grid">
+    <label>Name<input class="f-name" value="${esc(d.name)}"></label>
+    <label>Preis (€)<input class="f-price" type="number" min="0" step="0.1" value="${Number(d.price)||0}"></label>
+    <label>Kategorie EN<input class="f-category" value="${esc(d.category)}"></label>
+    <label>Kategorie DE<input class="f-category-de" value="${esc(d.category_de)}"></label>
+    <label>Reihenfolge<input class="f-sort" type="number" value="${d.sort??999}"></label>
+    <label>Menge / Größe<input class="f-volume" value="${esc(d.volume||'')}" placeholder="z. B. 0,33 l"></label>
+    <label class="wide">Beschreibung EN<textarea class="f-desc">${esc(d.desc||'')}</textarea></label>
+    <label class="wide">Beschreibung DE<textarea class="f-desc-de">${esc(d.desc_de||'')}</textarea></label>
+    <label>Allergene<input class="f-allergens" value="${esc(d.allergens||'')}"></label>
+    <label class="wide">Bildpfad / Bild-URL<input class="f-image" value="${esc(d.image||'')}" placeholder="images/food/example.jpg"></label>
+    <label class="wide upload-label">Bild in diesem Browser auswählen<input class="f-upload" type="file" accept="image/*"><small>Nur lokal gespeichert; für alle Gäste das Bild später in GitHub hochladen.</small></label>
+   </div>
+   <div class="admin-card-actions"><button type="button" class="duplicateItem">Duplizieren</button><button type="button" class="deleteItem danger-soft">Löschen</button></div>
+  </div>
+ </article>`;
 }
-
-loginForm.addEventListener("submit",async e=>{
-  e.preventDefault();
-  loginError.textContent="";
-  const entered=adminPassword.value;
-  const enteredHash=await sha256(entered);
-  if(enteredHash===ADMIN_PASSWORD_HASH){
-    sessionStorage.setItem(ADMIN_SESSION_KEY,"yes");
-    unlockAdmin();
-  }else{
-    loginError.textContent="Incorrect password / Falsches Passwort";
-    adminPassword.select();
-  }
+function render(){
+ updateCategoryFilter();
+ const q=$('adminSearch').value.trim().toLowerCase(), type=$('typeFilter').value, cat=$('categoryFilter').value;
+ const rows=allRecords().filter(r=>{
+  const d=r.data, hay=[d.name,d.category,d.category_de,d.desc,d.desc_de].join(' ').toLowerCase();
+  return (!q||hay.includes(q))&&(type==='all'||r.source===type)&&(cat==='all'||d.category===cat);
+ }).sort((a,b)=>bySort(a.data,b.data));
+ $('editorList').innerHTML=rows.map(recordCard).join('');
+ $('itemCount').textContent=`${rows.length} Produkte`;
+}
+function findRecord(card){
+ const list=card.dataset.source==='cocktail'?menuData.drinks:catalogData;
+ return list.find(x=>x.id===card.dataset.id);
+}
+function collectCard(card){
+ const d=findRecord(card); if(!d)return;
+ d.visible=card.querySelector('.f-visible').checked;
+ d.name=card.querySelector('.f-name').value.trim()||'Unnamed item';
+ d.price=Number(card.querySelector('.f-price').value)||0;
+ d.category=card.querySelector('.f-category').value.trim();
+ d.category_de=card.querySelector('.f-category-de').value.trim();
+ d.sort=Number(card.querySelector('.f-sort').value)||999;
+ d.volume=card.querySelector('.f-volume').value.trim();
+ d.desc=card.querySelector('.f-desc').value.trim(); d.desc_de=card.querySelector('.f-desc-de').value.trim();
+ d.allergens=card.querySelector('.f-allergens').value.trim(); d.image=card.querySelector('.f-image').value.trim();
+}
+function collectAll(){document.querySelectorAll('.admin-product').forEach(collectCard)}
+function save(show=true){collectAll();saveMenuData(menuData);saveCatalogData(catalogData);if(show){$('status').classList.add('show');setTimeout(()=>$('status').classList.remove('show'),1200)}}
+function makeNew(){
+ const now=Date.now();
+ catalogData.push({id:'item-'+now,name:'Neues Produkt',category:'Kitchen',category_de:'Küche',price:0,volume:'',desc:'',desc_de:'',allergens:'',image:'',visible:true,sort:999});
+ save(false);$('adminSearch').value='';$('typeFilter').value='catalog';$('categoryFilter').value='all';render();
+ const card=document.querySelector(`[data-id="item-${now}"]`);card?.scrollIntoView({behavior:'smooth',block:'center'});card?.classList.add('expanded');card?.querySelector('.f-name')?.select();
+}
+$('editorList').addEventListener('click',e=>{
+ const card=e.target.closest('.admin-product');if(!card)return;
+ if(e.target.closest('.admin-collapse')||e.target.closest('.admin-product-title')||e.target.closest('.admin-thumb')){card.classList.toggle('expanded');return}
+ if(e.target.closest('.deleteItem')){
+  if(!confirm('Dieses Produkt wirklich löschen?'))return;
+  const list=card.dataset.source==='cocktail'?menuData.drinks:catalogData;
+  const idx=list.findIndex(x=>x.id===card.dataset.id);if(idx>=0)list.splice(idx,1);save(false);render();return;
+ }
+ if(e.target.closest('.duplicateItem')){
+  collectCard(card);const d=findRecord(card),copy=JSON.parse(JSON.stringify(d));copy.id=(card.dataset.source==='cocktail'?'drink-':'item-')+Date.now();copy.name+=' Copy';copy.sort=(Number(copy.sort)||999)+1;
+  (card.dataset.source==='cocktail'?menuData.drinks:catalogData).push(copy);save(false);render();return;
+ }
 });
-</script>
-</body></html>
+$('editorList').addEventListener('change',e=>{
+ if(!e.target.matches('.f-upload'))return;const file=e.target.files[0];if(!file)return;
+ if(file.size>850000){alert('Bild ist zu groß. Bitte unter 850 KB verwenden.');e.target.value='';return}
+ const card=e.target.closest('.admin-product'),reader=new FileReader();
+ reader.onload=()=>{card.querySelector('.f-image').value=reader.result;const img=card.querySelector('.admin-thumb img');img.src=reader.result;img.style.display='block'};reader.readAsDataURL(file);
+});
+$('saveAll').onclick=()=>save();$('addItem').onclick=makeNew;
+['adminSearch','typeFilter','categoryFilter'].forEach(id=>$(id).addEventListener(id==='adminSearch'?'input':'change',render));
+$('exportBtn').onclick=()=>{collectAll();const payload={version:'V12',exportedAt:new Date().toISOString(),menuData,catalogData};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`the-sign-menu-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href)};
+$('importFile').onchange=async()=>{const f=$('importFile').files[0];if(!f)return;try{const p=JSON.parse(await f.text());if(!p.menuData?.drinks||!Array.isArray(p.catalogData))throw Error();menuData=p.menuData;catalogData=p.catalogData;save(false);render();alert('Backup importiert.')}catch{alert('Ungültige Backup-Datei.')}};
+$('resetBtn').onclick=()=>{if(confirm('Alle lokalen Änderungen löschen und Original wiederherstellen?')){resetMenuData();resetCatalogData();menuData=loadMenuData();catalogData=loadCatalogData();render();save(false)}};
+async function sha256(text){const bytes=new TextEncoder().encode(text),hash=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('')}
+function unlockAdmin(){document.body.classList.remove('admin-locked');$('loginGate').hidden=true;$('adminApp').hidden=false;render()}
+if(sessionStorage.getItem(ADMIN_SESSION_KEY)==='yes')unlockAdmin();
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginError').textContent='';if(await sha256($('adminPassword').value)===ADMIN_PASSWORD_HASH){sessionStorage.setItem(ADMIN_SESSION_KEY,'yes');unlockAdmin()}else{$('loginError').textContent='Incorrect password / Falsches Passwort';$('adminPassword').select()}});
+</script></body></html>

@@ -1,0 +1,23 @@
+THE SIGN DIGITAL MENU V12 ADMIN PRO
+
+新增功能：
+- Admin 可添加、修改、隐藏、删除和复制菜单项目
+- 可管理 Cocktails、Spritz、Wine、Champagne、Beer、Water、Soft Drinks、Kitchen、Desserts
+- 可修改名称、德语/英语分类、价格、容量、描述、过敏原、图片路径和排序
+- 支持本地图片预览、菜单备份导出与导入
+- 主菜单会读取 Admin 保存的 Cocktail、Drinks 和 Essen 数据
+
+重要说明：
+这是 GitHub Pages 静态网站。Admin 保存的数据使用浏览器 Local Storage，因此只会影响同一台设备、同一个浏览器。
+其他客人的手机不会自动收到这些修改。若要让所有客人实时看到 Admin 更新，需要下一步接入中央在线数据库，例如 Google Apps Script + Google Sheets、Firebase 或 Supabase。
+
+使用：
+1. 上传 ZIP 内所有文件覆盖 GitHub 仓库。
+2. 打开 /admin.html 并登录。
+3. 修改后点击“Alle speichern”。
+4. 重要修改后点击“Backup exportieren”保存 JSON 备份。
+
+图片：
+- 推荐使用图片路径，例如 images/food/fries.jpg
+- 将图片上传到相应 GitHub 文件夹后，所有客人都能看到
+- Admin 中直接选择本地图片，只适合当前浏览器预览，不会自动上传到 GitHub
