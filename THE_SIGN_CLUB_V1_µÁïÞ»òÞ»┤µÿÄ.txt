@@ -1,0 +1,52 @@
+THE SIGN CLUB V1.0 — 测试说明
+================================
+
+一、客人端
+打开 member.html
+
+测试流程：
+1. 填写 Vorname、E-Mail、Passwort、生日日期。
+2. Datenschutz 必须勾选；Marketing 可不勾选。
+3. 注册成功后会直接进入 THE SIGN CLUB，并显示 Welcome Drink。
+4. Angebote 中统一显示：
+   - Welcome Drink
+   - Birthday Drink
+   - Cocktail of the Month
+   - Loyalty Reward
+5. 点击 Welcome Drink 的 QR-Code anzeigen，生成一次性优惠二维码。
+
+二、员工端
+打开 member-admin.html
+
+当前测试 Staff PIN：2580
+
+员工端只有：
+1. QR-Code scannen
+2. Ergebnis
+3. Einlösung bestätigen
+
+电脑测试：
+可把客人二维码中的网页地址复制到“Computer-Test”输入框中检查。
+手机测试：
+员工手机用普通相机扫描客人手机/电脑上的二维码；二维码会打开 Staff Scanner 页面。
+
+三、当前版本的重要边界
+这是 UI 与操作流程原型，资料使用浏览器 localStorage 保存：
+- 同一台设备可以防止同一 Email 重复注册。
+- 同一台员工设备可以防止同一优惠重复核销。
+- 不同员工手机之间目前不会自动同步。
+- 客人手机不会自动收到另一台员工手机的核销状态。
+- 密码仅为本地测试用途，不是正式安全登录。
+- 尚未发送真实邮件。
+
+正式营业前必须接入中央数据库和正式身份验证。完成后才能做到：
+- 三部员工手机实时同步；
+- 客人页面即时显示 Eingelöst；
+- 真正判断新注册用户；
+- Birthday 自动开放；
+- Loyalty 次数跨设备同步；
+- 邮件提醒和退订管理。
+
+四、推荐下一步
+THE SIGN CLUB V1.1：中央数据库与登录
+核心是让“客人注册 → 员工扫码 → 客人优惠自动失效”在不同手机之间实时同步。

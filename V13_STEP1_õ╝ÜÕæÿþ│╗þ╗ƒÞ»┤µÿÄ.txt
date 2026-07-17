@@ -1,0 +1,24 @@
+THE SIGN AI MENU — V13 STEP 1
+
+已加入：
+1. The Sign Club 注册入口
+2. Datenschutz 页面与分开的营销同意框
+3. 唯一会员编号
+4. Welcome Benefit（注册后30天有效）
+5. 手机会员二维码
+6. Admin Member Scanner
+7. 一次性核销与重复使用提醒
+8. 摄像头扫码（支持 BarcodeDetector 的浏览器）及普通手机相机扫码
+
+测试：
+- 打开 member.html 注册。
+- 用店员手机普通相机扫描二维码。
+- 打开 member-admin.html 后点击“Jetzt einlösen”。
+- 再次扫描会显示“Bereits eingelöst”。
+
+重要：
+当前为第一步原型。客人的会员资料保存在客人自己的浏览器；核销记录保存在店员/Admin 手机浏览器。不同店员手机之间暂不同步。
+正式上线前必须连接安全数据库，并补全 datenschutz-club.html 中的经营主体、地址、邮箱、服务商和保存期限。
+
+下一步：
+连接中央数据库，使所有店员手机共享会员、核销、消费次数和生日提醒。

@@ -1,0 +1,30 @@
+THE SIGN CLUB MANAGER V1 – 安装说明
+
+重要：这一版增加了新的 Google Apps Script 后端功能，所以只上传网页文件还不够。
+
+1. 打开绑定 THE SIGN CLUB DATABASE 的 Google Apps Script。
+2. 用本压缩包中的 GOOGLE_APPS_SCRIPT_CLUB.gs 全部替换旧代码。
+3. 先在编辑器中运行一次 setupClubSheets()。
+   - 它会新增 Offers 工作表。
+   - 已有 Members / Rewards / Visits 数据不会被删除。
+4. 点击“部署 / Bereitstellen” → “管理部署 / Bereitstellungen verwalten”。
+5. 编辑现有 Web App，选择“新版本 / Neue Version”，然后部署。
+6. /exec 地址通常保持不变，网页里已经保留当前地址。
+7. 上传整个网站文件后，打开 club-manager.html。
+
+当前 Manager PIN：2580
+当前 Staff PIN：2580
+正式营业前请在 Manager → Settings 修改 Staff PIN。
+Manager PIN 目前需要在 Google Sheets 的 Settings 表中手动修改 MANAGER_PIN。
+
+第一版 Manager 已包含：
+- Dashboard
+- Members 搜索与列表
+- Offers 新建与编辑
+- Scanner 入口
+- Statistics 占位页
+- Settings（Staff PIN、Welcome 有效天数）
+
+注意：
+- 修改后端代码后必须重新部署“新版本”，只保存代码不会让 /exec 使用新代码。
+- Google Sheets 适合当前试运行规模，但不要把表格编辑权限给普通员工。

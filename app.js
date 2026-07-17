@@ -243,3 +243,51 @@ if(scrollTopBtn){
  scrollTopBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
  updateScrollTop();
 }
+
+// V12.2: protect guests from accidentally leaving the menu with Android's Back button.
+// First Back press shows a bilingual hint; a second press within 2 seconds exits.
+(function setupDoubleBackToExit(){
+  if(!window.history || !window.history.pushState) return;
+
+  const EXIT_WINDOW_MS=2000;
+  let firstBackAt=0;
+  let resetTimer=null;
+  const guardState={...(history.state||{}),theSignBackGuard:true};
+
+  // Add one same-page history entry. Pressing Back returns to the guarded entry
+  // instead of immediately navigating away from the AI Menu.
+  history.replaceState({...guardState,theSignBackBase:true},'',location.href);
+  history.pushState({...guardState,theSignBackTop:true},'',location.href);
+
+  const showExitHint=()=>{
+    const message=lang==='de'
+      ? 'Zum Beenden erneut Zurück drücken'
+      : 'Press back again to exit';
+    const el=document.getElementById('toast');
+    if(!el) return;
+    el.textContent=message;
+    el.classList.add('show');
+    window.setTimeout(()=>el.classList.remove('show'),EXIT_WINDOW_MS);
+  };
+
+  window.addEventListener('popstate',()=>{
+    const now=Date.now();
+
+    // A second Back press during the active window is allowed to leave the page.
+    if(firstBackAt && now-firstBackAt<=EXIT_WINDOW_MS){
+      firstBackAt=0;
+      if(resetTimer) clearTimeout(resetTimer);
+      history.back();
+      return;
+    }
+
+    firstBackAt=now;
+    showExitHint();
+
+    // Restore the protective entry so the next Back press can be detected.
+    history.pushState({...guardState,theSignBackTop:true},'',location.href);
+
+    if(resetTimer) clearTimeout(resetTimer);
+    resetTimer=setTimeout(()=>{firstBackAt=0;},EXIT_WINDOW_MS);
+  });
+})();

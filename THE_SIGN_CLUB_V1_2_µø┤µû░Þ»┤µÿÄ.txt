@@ -1,0 +1,14 @@
+THE SIGN CLUB V1.2 GOOGLE SHEETS SYNC
+
+新增：
+1. Google Sheets 中央会员数据库
+2. 电话号码全局唯一，不再只限同一浏览器
+3. 注册和登录由 Google Apps Script 后端判断
+4. Welcome Drink 跨设备核销
+5. 员工手机核销后，客人页面重新聚焦会同步状态
+6. Loyalty 消费次数跨设备同步
+7. Google Sheets 自动建立 Members / Rewards / Visits / Sessions / Settings
+8. 员工核销和增加次数需要服务器端 PIN 验证
+
+必须完成 GOOGLE_SHEETS_CLUB_安装说明.md 后才能联网使用。
+如果 club-api.js 没有填写 /exec URL，页面会提示 Google 同步尚未配置。

@@ -1,0 +1,28 @@
+THE SIGN CLUB — STAFF SCANNER
+
+Staff address:
+https://你的域名/staff.html
+
+This opens member-admin.html.
+
+IMPORTANT: Google Apps Script must also be updated:
+1. Open the Apps Script project connected to the Club Google Sheet.
+2. Replace its code with GOOGLE_APPS_SCRIPT_CLUB.gs from this ZIP.
+3. Deploy > Manage deployments > Edit > New version > Deploy.
+4. Do not create an unrelated new Sheet. Keep the existing Club Sheet.
+
+Manager settings:
+- Open club-manager.html
+- Settings > STAFF PIN
+- Save the PIN staff will use.
+
+How staff uses it:
+A. Open staff.html and enter Staff PIN, then tap QR-Code scannen.
+B. On iPhone, the most reliable method is also: open the normal Camera app, scan the customer QR, tap the link, enter PIN, see green/red result, then confirm redemption.
+
+Green = valid; tap Einlösung bestätigen.
+Red = invalid/redeemed/expired; do not serve the reward.
+
+The scanner supports:
+- Member QR: shows member and lets staff add +1 paid drink.
+- Offer QR: validates Welcome/Loyalty reward and confirms one-time redemption.

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>THE SIGN CLUB</title><link rel="stylesheet" href="style.css">
+</head>
+<body class="club-page club-v1">
+<header class="club-header"><a href="index.html" class="brand"><img class="logo-mark" src="logo.png" alt="The Sign"><span><b>The Sign</b><small>Club</small></span></a><button id="clubLang" class="club-lang">DE / EN</button></header>
+<main class="club-shell club-shell-wide">
+<section id="guestHero" class="club-hero"><p class="eyebrow">THE SIGN CLUB</p><h1 id="clubTitle">Deine Vorteile. Einfach und exklusiv.</h1><p id="clubLead">Registrieren, Vorteil erhalten und beim nächsten Besuch einlösen.</p></section>
+
+<section id="registerCard" class="club-card club-register-card">
+<div class="club-card-heading"><div><p class="eyebrow">THE SIGN CLUB</p><h2 id="registerTitle">Kostenlos registrieren</h2></div><span class="club-secure">◆ MEMBER ACCESS</span></div>
+<div class="club-auth-switch"><button id="showRegister" class="active" type="button">Registrieren</button><button id="showLogin" type="button">Anmelden</button></div>
+<form id="clubForm">
+<div class="club-form-grid">
+<label><span id="nameLabel">Vorname</span><input id="memberName" autocomplete="given-name" required maxlength="60"></label>
+<label><span id="phoneLabel">Telefonnummer</span><input id="memberPhone" type="tel" autocomplete="tel" required maxlength="30" placeholder="z. B. +43 664 1234567"><small id="phoneHint">Eine Telefonnummer kann nur einmal registriert werden.</small></label>
+<label><span id="emailLabel">E-Mail</span><input id="memberEmail" type="email" autocomplete="email" required maxlength="120"></label>
+<label><span id="passwordLabel">Passwort</span><input id="memberPassword" type="password" autocomplete="new-password" required minlength="6" maxlength="64"><small id="passwordHint">Mindestens 6 Zeichen</small></label>
+<div class="club-birthday-field"><span id="birthdayLabel">Geburtsdatum</span><div class="club-date-row"><select id="birthDay" required><option value="">Tag</option></select><select id="birthMonth" required><option value="">Monat</option></select></div><small id="birthdayHint">Das Geburtsjahr wird nicht benötigt.</small></div>
+</div>
+<label class="club-check"><input id="privacyConsent" type="checkbox" required><span id="privacyText">Ich akzeptiere die <a href="datenschutz-club.html" target="_blank">Datenschutzerklärung</a>.</span></label>
+<label class="club-check"><input id="marketingConsent" type="checkbox"><span id="marketingText">Ich möchte Angebote, Neuigkeiten und Veranstaltungen per E-Mail erhalten.</span></label>
+<p id="formError" class="club-error" hidden></p>
+<button class="primary full club-gold-button" id="joinBtn" type="submit">Jetzt Mitglied werden</button>
+<p class="club-small" id="clubNotice">Marketing-Mitteilungen sind freiwillig und jederzeit abbestellbar.</p>
+</form>
+<form id="loginForm" hidden>
+<div class="club-form-grid">
+<label><span id="loginPhoneLabel">Telefonnummer</span><input id="loginPhone" type="tel" autocomplete="tel" required maxlength="30"></label>
+<label><span id="loginPasswordLabel">Passwort</span><input id="loginPassword" type="password" autocomplete="current-password" required minlength="6" maxlength="64"></label>
+</div>
+<p id="loginError" class="club-error" hidden></p>
+<button class="primary full club-gold-button" id="loginBtn" type="submit">Anmelden</button>
+</form>
+</section>
+
+<section id="memberArea" hidden>
+<div id="welcomeFlash" class="club-welcome-flash" hidden><span>✓</span><div><b id="welcomeFlashTitle">Willkommen im THE SIGN CLUB</b><small id="welcomeFlashText">Dein Welcome Drink ist jetzt verfügbar.</small></div></div>
+<section class="club-member-top"><div><p class="eyebrow">THE SIGN CLUB</p><h1><span id="helloText">Hallo</span>, <span id="memberDisplayName"></span></h1><p id="newOffersText">2 neue Angebote</p></div><button id="showMemberQr" class="member-id-button"><span id="memberId"></span><small id="showQrText">Mitglieds-QR anzeigen</small></button></section>
+<nav class="club-tabs"><button class="active" data-club-tab="offers" id="offersTab">Angebote</button><button data-club-tab="benefits" id="benefitsTab">Meine Vorteile</button></nav>
+
+<section id="offersView"><div class="club-section-heading"><div><p class="eyebrow">DEINE VORTEILE</p><h2 id="activeOffersTitle">Aktive Vorteile</h2></div><button id="showAllOffers" class="club-text-button">Alle Angebote</button></div><div id="offerGrid" class="offer-grid"></div></section>
+
+<section id="benefitsView" hidden>
+<div class="club-section-heading"><div><p class="eyebrow">MEMBER STATUS</p><h2 id="benefitsTitle">Meine Vorteile</h2></div></div>
+<div class="club-card loyalty-panel"><div class="loyalty-head"><div><span id="loyaltyPanelLabel">LOYALTY</span><strong id="visitsValue">0 / 10 Drinks</strong></div><span id="loyaltyRemaining">Noch 10 bis zum Reward</span></div><div class="loyalty-track"><i id="loyaltyBar"></i></div><p id="loyaltyInfo">Nach 10 bestätigten Drinks wird automatisch ein Reward freigeschaltet.</p></div>
+<div class="club-card settings-card"><h3 id="myDataTitle">Meine Daten & Einstellungen</h3><dl><div><dt id="dataPhoneLabel">Telefonnummer</dt><dd id="memberPhoneDisplay"></dd></div><div><dt id="dataEmailLabel">E-Mail</dt><dd id="memberEmailDisplay"></dd></div><div><dt id="dataBirthdayLabel">Geburtstag</dt><dd id="memberBirthdayDisplay"></dd></div></dl>
+<label class="club-check club-setting-check"><input id="marketingToggle" type="checkbox"><span id="marketingToggleText">Angebote, Neuigkeiten und Veranstaltungen per E-Mail erhalten.</span></label><p id="marketingSaved" class="club-small" hidden>Gespeichert.</p>
+<div class="club-setting-actions"><a href="datenschutz-club.html" id="privacyLink">Datenschutz</a><button id="logoutMember">Abmelden</button><button id="deleteMember" class="danger-link">Konto auf diesem Gerät löschen</button></div></div>
+</section>
+</section>
+</main>
+<div id="offerModal" class="club-modal" hidden><div class="club-modal-panel"><button id="closeOfferModal" class="modal-close" aria-label="Schließen">×</button><div id="offerModalContent"></div></div></div>
+<div id="memberQrModal" class="club-modal" hidden><div class="club-modal-panel qr-panel"><button id="closeMemberQr" class="modal-close">×</button><p class="eyebrow">DIGITAL MEMBER PASS</p><h2 id="memberQrName"></h2><p id="memberQrId"></p><div id="memberQr" class="member-qr"></div><p class="club-small" id="memberQrHint">Beim Personal vorzeigen.</p></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" referrerpolicy="no-referrer"></script><script src="member.js"></script>
+</body></html>
