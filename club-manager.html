@@ -1,0 +1,25 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>THE SIGN CLUB Manager</title><link rel="stylesheet" href="club-manager.css"></head><body>
+<div class="shell">
+  <aside><div class="brand">THE SIGN CLUB<small>Manager</small></div><nav>
+    <button data-view="dashboard" class="active">Dashboard</button><button data-view="members">Members</button><button data-view="offers">Offers</button><a href="member-admin.html">Scanner</a><button data-view="statistics">Statistics</button><button data-view="settings">Settings</button>
+  </nav><button id="logout" class="logout">Abmelden</button></aside>
+  <main><header><div><h1 id="title">Dashboard</h1><p id="subtitle">Club performance at a glance</p></div><span id="connection">Google Sheets</span></header>
+    <section id="login" class="login card"><h2>Manager Login</h2><p>Bitte Manager PIN eingeben.</p><input id="pin" type="password" inputmode="numeric" placeholder="PIN"><button id="loginBtn" class="gold">Anmelden</button><div id="loginError"></div></section>
+    <div id="app" hidden>
+      <section id="dashboard" class="view"></section>
+      <section id="members" class="view" hidden><div class="toolbar"><input id="memberSearch" placeholder="Name, Telefon, E-Mail oder Member ID"><button id="memberSearchBtn">Suchen</button></div><div class="table-wrap"><table><thead><tr><th>Member</th><th>Telefon</th><th>E-Mail</th><th>Birthday</th><th>Visits</th><th>Status</th></tr></thead><tbody id="memberRows"></tbody></table></div></section>
+      <section id="offers" class="view" hidden><div class="toolbar"><button id="newOffer" class="gold">+ Neues Angebot</button></div><div id="offerCards" class="offer-grid"></div></section>
+      <section id="statistics" class="view" hidden><div class="card"><h2>Statistics</h2><p>Die wichtigsten Kennzahlen werden im Dashboard angezeigt. Detaillierte Diagramme folgen in der nächsten Ausbaustufe.</p></div></section>
+      <section id="settings" class="view" hidden><div class="settings-grid"><label>Staff PIN<input id="staffPin"></label><label>Welcome gültig (Tage)<input id="welcomeDays" type="number" min="1" max="365"></label><button id="saveSettings" class="gold">Speichern</button></div></section>
+    </div>
+  </main>
+</div>
+<dialog id="offerDialog"><form method="dialog" id="offerForm"><div class="dialog-head"><h2>Angebot bearbeiten</h2><button value="cancel">×</button></div><input type="hidden" id="offerId"><div class="form-grid">
+<label>Typ<select id="offerType"><option>Welcome</option><option>Birthday</option><option>Monthly Deal</option><option>Loyalty Reward</option><option>Event</option><option>General Promotion</option></select></label>
+<label>Name DE<input id="nameDe" required></label><label>Name EN<input id="nameEn"></label><label>Produkt / Drink<input id="product"></label>
+<label>Beschreibung DE<textarea id="descDe"></textarea></label><label>Beschreibung EN<textarea id="descEn"></textarea></label>
+<label>Bild URL<input id="imageUrl"></label><label>Startdatum<input id="startDate" type="date"></label><label>Enddatum<input id="endDate" type="date"></label>
+<label>Member Preis<input id="memberPrice" type="number" step="0.01"></label><label>Normalpreis<input id="normalPrice" type="number" step="0.01"></label>
+<label class="check"><input id="memberOnly" type="checkbox" checked> Nur Mitglieder</label><label class="check"><input id="offerActive" type="checkbox" checked> Aktiv</label>
+</div><div class="actions"><button value="cancel">Abbrechen</button><button id="saveOffer" value="default" class="gold">Speichern</button></div></form></dialog>
+<script src="club-api.js"></script><script src="club-manager.js"></script></body></html>
