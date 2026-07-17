@@ -22,7 +22,9 @@
   <button class="brand" data-go="home"><img class="logo-mark" src="logo.png" alt="The Sign"><span><b>The Sign</b><small data-i18n="brandSub">AI Cocktail Experience</small></span></button>
   <nav>
     <button data-go="ai" data-i18n="navAI">AI Bartender</button>
-    <button data-go="menu" data-i18n="navMenu">Full Menu</button>
+    <button data-go="menu" data-i18n="navMenu">Cocktails</button>
+    <button data-go="drinks" data-i18n="navDrinks">Drinks</button>
+    <button data-go="kitchen" data-i18n="navKitchen">Kitchen</button>
     <button data-go="rituals" data-i18n="navRituals">Rituals</button><a href="hydration.html">Hydration</a><a href="party.html">Party</a>
   </nav>
   <div class="header-actions">
@@ -30,13 +32,16 @@
     <button id="navToggle" class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </header>
-<div id="mobileNav" class="mobile-nav">
+<div id="mobileNav" class="mobile-nav" aria-hidden="true">
   <button data-go="ai" data-i18n="navAI">AI Bartender</button>
-  <button data-go="menu" data-i18n="navMenu">Full Menu</button>
+  <button data-go="menu" data-i18n="navMenu">Cocktails</button>
+  <button data-go="drinks" data-i18n="navDrinks">Drinks</button>
+  <button data-go="kitchen" data-i18n="navKitchen">Kitchen</button>
   <button data-go="rituals" data-i18n="navRituals">Rituals</button>
   <a href="hydration.html">Hydration</a>
   <a href="party.html">Party</a>
 </div>
+<div id="mobileNavBackdrop" class="mobile-nav-backdrop" aria-hidden="true"></div>
 
 <main>
 <section id="home" class="hero">
@@ -144,6 +149,19 @@
   <div id="menuGrid" class="menu-grid"></div>
 </section>
 
+<section id="drinks" class="section catalog-section dark-soft">
+  <div class="heading split"><div><p class="eyebrow" data-i18n="drinksEyebrow">DRINKS</p><h2 data-i18n="drinksTitle">Spritz, wine, bubbles and more.</h2></div><input id="drinksSearch" class="search" data-i18n-placeholder="drinksSearch" placeholder="Search drinks"></div>
+  <div id="drinksFilters" class="filters catalog-filters"></div>
+  <div id="drinksGrid" class="product-grid"></div>
+</section>
+
+<section id="kitchen" class="section catalog-section">
+  <div class="heading"><p class="eyebrow" data-i18n="kitchenEyebrow">BAR KITCHEN</p><h2 data-i18n="kitchenTitle">Small bites, big night.</h2><p class="catalog-note" data-i18n="allergenNote">Please ask our staff about allergens.</p></div>
+  <div id="foodGrid" class="product-grid food-grid"></div>
+  <div class="heading dessert-heading"><p class="eyebrow" data-i18n="dessertEyebrow">DESSERTS</p><h2 data-i18n="dessertTitle">A little sweet finish.</h2></div>
+  <div id="dessertGrid" class="product-grid food-grid"></div>
+</section>
+
 <section id="rituals" class="section rituals">
   <div class="heading"><p class="eyebrow" data-i18n="ritualEyebrow">A LITTLE RITUAL WORTH KEEPING</p><h2 data-i18n="ritualTitle">Every night has its own story.</h2></div>
   <div class="ritual-grid">
@@ -166,9 +184,10 @@
     <button class="primary full" id="confirmOrder" data-i18n="sendStaff">🍸 Add to overview</button>
   </div>
 </aside>
-<button id="cartFab" class="cart-fab">🛒 <span data-i18n="order">Tonight's Picks</span> (<span id="cartCount">0</span>)</button>
+<button id="cartFab" class="cart-fab"><span>🛒</span><span data-i18n="order">Tonight's Picks</span><b><span id="cartCount">0</span> · <span id="cartFabTotal">€0,00</span></b></button>
 <div id="toast" class="toast"></div>
 <script src="menu-data.js"></script>
+<script src="v11-data.js"></script>
 <script src="shared.js"></script>
 <script src="app.js"></script>
 

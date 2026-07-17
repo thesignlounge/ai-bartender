@@ -39,7 +39,7 @@ function doPost(e) {
           positiveNumber(item.alcoholLevel, 0),
           cleanText((item.baseSpirits || []).join(', ')),
           cleanText((item.tastes || []).join(', ')),
-          cleanText(item.category || ''),
+          cleanText(item.category || ''), cleanText(item.itemType || ''), cleanText(item.volume || ''),
           action === 'create' ? 'AKTIV' : 'AKTUALISIERT'
         ];
       });
@@ -70,7 +70,7 @@ function deleteRowsForRecord(sheet, recordId) {
 function getOrCreateDetailsSheet(ss) {
   let sheet = ss.getSheetByName(DETAILS_SHEET);
   if (!sheet) sheet = ss.insertSheet(DETAILS_SHEET);
-  const headers = ['Zeitstempel','Datum','Uhrzeit','Referenz','Cocktail','Anzahl','Einzelpreis','Summe','Sprache','Stärke','Basis Spirituose','Geschmack','Kategorie','Status'];
+  const headers = ['Zeitstempel','Datum','Uhrzeit','Referenz','Artikel','Anzahl','Einzelpreis','Summe','Sprache','Stärke','Basis Spirituose','Geschmack','Kategorie','Typ','Größe','Status'];
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(headers);
   } else if (sheet.getLastColumn() < headers.length) {
@@ -79,7 +79,7 @@ function getOrCreateDetailsSheet(ss) {
   sheet.getRange(1,1,1,headers.length).setFontWeight('bold');
   sheet.setFrozenRows(1);
   sheet.setColumnWidth(1,170); sheet.setColumnWidth(4,220); sheet.setColumnWidth(5,250);
-  sheet.setColumnWidth(11,180); sheet.setColumnWidth(12,180); sheet.setColumnWidth(14,120);
+  sheet.setColumnWidth(11,180); sheet.setColumnWidth(12,180); sheet.setColumnWidth(14,120); sheet.setColumnWidth(15,100); sheet.setColumnWidth(16,120);
   return sheet;
 }
 
@@ -88,7 +88,7 @@ function rebuildDailySummary(ss, timezone) {
   let summary = ss.getSheetByName(DAILY_SHEET);
   if (!summary) summary = ss.insertSheet(DAILY_SHEET);
   summary.clearContents();
-  const headers = ['Datum','Cocktail','Gesamtanzahl','Gesamtwert','Letzte Aktualisierung'];
+  const headers = ['Datum','Artikel','Gesamtanzahl','Gesamtwert','Letzte Aktualisierung'];
   summary.getRange(1,1,1,headers.length).setValues([headers]).setFontWeight('bold');
   summary.setFrozenRows(1);
 

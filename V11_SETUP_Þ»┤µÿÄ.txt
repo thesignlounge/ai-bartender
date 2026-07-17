@@ -1,0 +1,19 @@
+THE SIGN DIGITAL MENU V11
+
+1. 这是基于 V10 Mobile Fixed + V10.1 Business Sync 制作。
+2. 新增 Drinks、Kitchen、Desserts，全部统一进入 Meine Auswahl。
+3. Salted Potato Chips 已设为 €2,50。
+4. 食物/甜点/饮料图片位置：
+   images/food/
+   images/desserts/
+   images/drinks/
+   没有照片时会自动显示 The Sign Logo 占位。
+5. 请把 GOOGLE_APPS_SCRIPT_CODE.gs 覆盖到 Google Apps Script，然后部署新版本。
+6. 原 /exec 地址无需更换。
+7. 手机优先布局：小屏使用横向图片+内容卡片，底部购物车同时显示数量和总额。
+
+V11.1 更新：
+- 手机使用右侧滑出的汉堡菜单；电脑/平板保留顶部导航。
+- Spritz、Wine、Champagne、Beer、Water、Soft Drinks 不显示照片占位。
+- Kitchen 与 Dessert 使用和鸡尾酒一致的竖向照片卡片，食物文字提高对比度。
+- Salted Potato Chips 价格保持 €2,50。

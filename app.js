@@ -1,11 +1,15 @@
 
 let menuData = loadMenuData();
-let drinks = menuData.drinks.filter(d=>d.visible!==false);
+let drinks = menuData.drinks.filter(d=>d.visible!==false).map(d=>({...d,itemType:'Cocktail'}));
+let catalogItems=(window.V11_CATALOG||[]).map(d=>({...d,itemType:d.category==='Kitchen'?'Kitchen':d.category==='Dessert'?'Dessert':'Drink',tastes:[],baseSpirits:[],alcoholLevel:0}));
+let allItems=[...drinks,...catalogItems];
 const i18n = {
-  en:{brandSub:"AI Cocktail Experience",navAI:"AI Bartender",navMenu:"Full Menu",navRituals:"Rituals",since:"A NIGHT OUT · SINCE 2007",heroTitle:"Tell us how you want to feel tonight.",heroLead:"Choose your mood, flavour and strength. The Sign AI Bartender will match you with the right drink.",findDrink:"Find my drink",seeAll:"See all drinks",romantic:"♥ Romantic",party:"✦ Party",fresh:"◌ Fresh",adventurous:"⚡ Adventurous",featureEyebrow:"AI-matched, just for you",featureTitle:"Your perfect drink, found in seconds.",featureSub:"Tell us your mood — the rest is on us.",yourAI:"YOUR AI BARTENDER",threeChoices:"Three choices. One perfect match.",mood:"Mood",romanticPlain:"Romantic",partyPlain:"Party",freshPlain:"Fresh",adventurousPlain:"Adventurous",classic:"Classic",surprise:"Surprise me",taste:"Taste",choose3:"Choose up to 3",sweet:"Sweet",sour:"Sour",bitter:"Bitter",spicy:"Spicy",smoky:"Smoky",strength:"Strength",easy:"Easy",balanced:"Balanced",strong:"Strong",recommend:"Recommend my cocktail",aiMatch:"AI MATCH",yourRec:"YOUR RECOMMENDATION",another:"Show another",addOrder:"Add to order",fullMenu:"FULL MENU",smartMenu:"Every drink. One smart menu.",searchPlaceholder:"Search cocktail, flavour or category",ritualEyebrow:"A LITTLE RITUAL WORTH KEEPING",ritualTitle:"Every night has its own story.",aperitivoDate:"Aperitivo Date",aperitivoText:"Raise a glass to gossip. Selected aperitivo highlights.",signatureTasting:"Signature Tasting",signatureText:"Choose three drinks from the tasting menu.",musicBingo:"Music Bingo",musicText:"Recognise the track, mark your card and play.",cheers:"Cheers & Shenanigans",cheersText:"Music, theatre, cocktails and late-night energy.",bartenderChoice:"Bartender Choice",bartenderText:"No menu, no limits. Let the bartender create.",yourOrder:"Your Selection",total:"Total",sendStaff:"🍸 Add to overview",cartHint:"This only saves your selection for today’s overview. It is not an order and is not sent to the POS.",order:"Tonight's Picks",added:"added",empty:"Your order is empty.",ready:"Recommendation ready",sweetBar:"Sweet",freshBar:"Fresh",boldBar:"Bold",curiousBar:"Curious",strengthHint:"Choose your preferred alcohol strength",level0:"Alcohol-free",level1:"Light",level2:"Medium",level3:"Strong",level4:"Very strong",baseSpirit:"Base spirit",baseHint:"Choose the spirit as a base",anySpirit:"Surprise me",liqueur:"Liqueur",exactMatch:"Exact match: all selected filters are applied.",closeMatch:"No exact match — showing the closest available cocktail.",photoComing:"Cocktail photo coming soon",saving:"Saving…",savedOverview:"Added to today’s overview",updatedOverview:"Overview updated",removedOverview:"Removed from today’s overview",saveChanges:"💾 Save changes",removeOverview:"Remove from overview",alreadySaved:"This unchanged selection is already in today’s overview",saveFailed:"Could not save. Please try again."},
-  de:{brandSub:"KI-Cocktail-Erlebnis",navAI:"KI-Barkeeper",navMenu:"Gesamte Karte",navRituals:"Wochenprogramm",since:"A NIGHT OUT · SEIT 2007",heroTitle:"Wie möchtest du dich heute Abend fühlen?",heroLead:"Wähle Stimmung, Geschmack und Stärke. Der KI-Barkeeper von The Sign findet den passenden Drink für dich.",findDrink:"Meinen Drink finden",seeAll:"Alle Drinks ansehen",romantic:"♥ Romantisch",party:"✦ Party",fresh:"◌ Frisch",adventurous:"⚡ Abenteuerlustig",featureEyebrow:"KI-Empfehlung, nur für dich",featureTitle:"Dein perfekter Drink, in Sekunden gefunden.",featureSub:"Sag uns deine Stimmung — den Rest übernehmen wir.",yourAI:"DEIN KI-BARKEEPER",threeChoices:"Drei Entscheidungen. Ein perfekter Match.",mood:"Stimmung",romanticPlain:"Romantisch",partyPlain:"Party",freshPlain:"Frisch",adventurousPlain:"Abenteuerlustig",classic:"Klassisch",surprise:"Überrasch mich",taste:"Geschmack",choose3:"Bis zu 3 auswählen",sweet:"Süß",sour:"Sauer",bitter:"Bitter",spicy:"Scharf",smoky:"Rauchig",strength:"Stärke",easy:"Leicht",balanced:"Ausgewogen",strong:"Stark",recommend:"Cocktail empfehlen",aiMatch:"KI-MATCH",yourRec:"DEINE EMPFEHLUNG",another:"Weitere Empfehlung",addOrder:"Zur Bestellung hinzufügen",fullMenu:"GESAMTE KARTE",smartMenu:"Alle Drinks. Eine smarte Karte.",searchPlaceholder:"Cocktail, Geschmack oder Kategorie suchen",ritualEyebrow:"EIN KLEINES RITUAL, DAS BLEIBT",ritualTitle:"Jeder Abend erzählt seine eigene Geschichte.",aperitivoDate:"Aperitivo Date",aperitivoText:"Ein Glas, gute Gespräche und ausgewählte Aperitivo-Highlights.",signatureTasting:"Signature Tasting",signatureText:"Wähle drei Drinks aus dem Tasting-Menü.",musicBingo:"Music Bingo",musicText:"Song erkennen, Karte markieren und mitspielen.",cheers:"Cheers & Shenanigans",cheersText:"Musik, Show, Cocktails und Late-Night-Energie.",bartenderChoice:"Bartender Choice",bartenderText:"Keine Karte, keine Grenzen. Lass den Barkeeper kreieren.",yourOrder:"Meine Auswahl",total:"Gesamt",sendStaff:"🍸 Zur Übersicht hinzufügen",cartHint:"Dies speichert deine Auswahl nur für die heutige Übersicht. Es ist keine Bestellung und wird nicht an das Kassensystem übermittelt.",order:"Meine Auswahl",added:"hinzugefügt",empty:"Deine Bestellung ist leer.",ready:"Empfehlung ist bereit",sweetBar:"Süß",freshBar:"Frisch",boldBar:"Kräftig",curiousBar:"Abenteuer",strengthHint:"Wähle die gewünschte Alkoholstärke",level0:"Ohne Alkohol",level1:"Leicht alkoholisch",level2:"Mittel",level3:"Stark",level4:"Sehr stark",baseSpirit:"Basis Spirituose",baseHint:"Wähle den Spirit als Basis",anySpirit:"Überrasch mich",liqueur:"Likör",exactMatch:"Exakter Treffer: Alle gewählten Filter werden berücksichtigt.",closeMatch:"Kein exakter Treffer – wir zeigen den passendsten verfügbaren Cocktail.",photoComing:"Cocktailfoto folgt in Kürze",saving:"Wird gespeichert…",savedOverview:"Zur heutigen Übersicht hinzugefügt",updatedOverview:"Übersicht aktualisiert",removedOverview:"Aus der heutigen Übersicht entfernt",saveChanges:"💾 Änderungen speichern",removeOverview:"Aus Übersicht entfernen",alreadySaved:"Diese unveränderte Auswahl wurde bereits gespeichert",saveFailed:"Speichern nicht möglich. Bitte erneut versuchen."}
+  en:{brandSub:"AI Cocktail Experience",navAI:"AI Bartender",navMenu:"Full Menu",navRituals:"Rituals",since:"A NIGHT OUT · SINCE 2007",heroTitle:"Tell us how you want to feel tonight.",heroLead:"Choose your mood, flavour and strength. The Sign AI Bartender will match you with the right drink.",findDrink:"Find my drink",seeAll:"See all drinks",romantic:"♥ Romantic",party:"✦ Party",fresh:"◌ Fresh",adventurous:"⚡ Adventurous",featureEyebrow:"AI-matched, just for you",featureTitle:"Your perfect drink, found in seconds.",featureSub:"Tell us your mood — the rest is on us.",yourAI:"YOUR AI BARTENDER",threeChoices:"Three choices. One perfect match.",mood:"Mood",romanticPlain:"Romantic",partyPlain:"Party",freshPlain:"Fresh",adventurousPlain:"Adventurous",classic:"Classic",surprise:"Surprise me",taste:"Taste",choose3:"Choose up to 3",sweet:"Sweet",sour:"Sour",bitter:"Bitter",spicy:"Spicy",smoky:"Smoky",strength:"Strength",easy:"Easy",balanced:"Balanced",strong:"Strong",recommend:"Recommend my cocktail",aiMatch:"AI MATCH",yourRec:"YOUR RECOMMENDATION",another:"Show another",addOrder:"Add to order",fullMenu:"FULL MENU",smartMenu:"Every drink. One smart menu.",searchPlaceholder:"Search cocktail, flavour or category",ritualEyebrow:"A LITTLE RITUAL WORTH KEEPING",ritualTitle:"Every night has its own story.",aperitivoDate:"Aperitivo Date",aperitivoText:"Raise a glass to gossip. Selected aperitivo highlights.",signatureTasting:"Signature Tasting",signatureText:"Choose three drinks from the tasting menu.",musicBingo:"Music Bingo",musicText:"Recognise the track, mark your card and play.",cheers:"Cheers & Shenanigans",cheersText:"Music, theatre, cocktails and late-night energy.",bartenderChoice:"Bartender Choice",bartenderText:"No menu, no limits. Let the bartender create.",yourOrder:"Your Selection",total:"Total",sendStaff:"🍸 Add to overview",cartHint:"This only saves your selection for today’s overview. It is not an order and is not sent to the POS.",order:"Tonight's Picks",added:"added",empty:"Your order is empty.",ready:"Recommendation ready",sweetBar:"Sweet",freshBar:"Fresh",boldBar:"Bold",curiousBar:"Curious",strengthHint:"Choose your preferred alcohol strength",level0:"Alcohol-free",level1:"Light",level2:"Medium",level3:"Strong",level4:"Very strong",baseSpirit:"Base spirit",baseHint:"Choose the spirit as a base",anySpirit:"Surprise me",liqueur:"Liqueur",exactMatch:"Exact match: all selected filters are applied.",closeMatch:"No exact match — showing the closest available cocktail.",photoComing:"Cocktail photo coming soon",saving:"Saving…",savedOverview:"Added to today’s overview",updatedOverview:"Overview updated",removedOverview:"Removed from today’s overview",saveChanges:"💾 Save changes",removeOverview:"Remove from overview",alreadySaved:"This unchanged selection is already in today’s overview",saveFailed:"Could not save. Please try again.",navDrinks:"Drinks",navKitchen:"Kitchen",drinksEyebrow:"DRINKS",drinksTitle:"Spritz, wine, bubbles and more.",drinksSearch:"Search drinks",kitchenEyebrow:"BAR KITCHEN",kitchenTitle:"Small bites, big night.",allergenNote:"Please ask our staff about allergens.",dessertEyebrow:"DESSERTS",dessertTitle:"A little sweet finish.",photoFoodComing:"Photo coming soon",allergens:"Allergens",perPiece:"per piece"},
+  de:{brandSub:"KI-Cocktail-Erlebnis",navAI:"KI-Barkeeper",navMenu:"Gesamte Karte",navRituals:"Wochenprogramm",since:"A NIGHT OUT · SEIT 2007",heroTitle:"Wie möchtest du dich heute Abend fühlen?",heroLead:"Wähle Stimmung, Geschmack und Stärke. Der KI-Barkeeper von The Sign findet den passenden Drink für dich.",findDrink:"Meinen Drink finden",seeAll:"Alle Drinks ansehen",romantic:"♥ Romantisch",party:"✦ Party",fresh:"◌ Frisch",adventurous:"⚡ Abenteuerlustig",featureEyebrow:"KI-Empfehlung, nur für dich",featureTitle:"Dein perfekter Drink, in Sekunden gefunden.",featureSub:"Sag uns deine Stimmung — den Rest übernehmen wir.",yourAI:"DEIN KI-BARKEEPER",threeChoices:"Drei Entscheidungen. Ein perfekter Match.",mood:"Stimmung",romanticPlain:"Romantisch",partyPlain:"Party",freshPlain:"Frisch",adventurousPlain:"Abenteuerlustig",classic:"Klassisch",surprise:"Überrasch mich",taste:"Geschmack",choose3:"Bis zu 3 auswählen",sweet:"Süß",sour:"Sauer",bitter:"Bitter",spicy:"Scharf",smoky:"Rauchig",strength:"Stärke",easy:"Leicht",balanced:"Ausgewogen",strong:"Stark",recommend:"Cocktail empfehlen",aiMatch:"KI-MATCH",yourRec:"DEINE EMPFEHLUNG",another:"Weitere Empfehlung",addOrder:"Zur Bestellung hinzufügen",fullMenu:"GESAMTE KARTE",smartMenu:"Alle Drinks. Eine smarte Karte.",searchPlaceholder:"Cocktail, Geschmack oder Kategorie suchen",ritualEyebrow:"EIN KLEINES RITUAL, DAS BLEIBT",ritualTitle:"Jeder Abend erzählt seine eigene Geschichte.",aperitivoDate:"Aperitivo Date",aperitivoText:"Ein Glas, gute Gespräche und ausgewählte Aperitivo-Highlights.",signatureTasting:"Signature Tasting",signatureText:"Wähle drei Drinks aus dem Tasting-Menü.",musicBingo:"Music Bingo",musicText:"Song erkennen, Karte markieren und mitspielen.",cheers:"Cheers & Shenanigans",cheersText:"Musik, Show, Cocktails und Late-Night-Energie.",bartenderChoice:"Bartender Choice",bartenderText:"Keine Karte, keine Grenzen. Lass den Barkeeper kreieren.",yourOrder:"Meine Auswahl",total:"Gesamt",sendStaff:"🍸 Zur Übersicht hinzufügen",cartHint:"Dies speichert deine Auswahl nur für die heutige Übersicht. Es ist keine Bestellung und wird nicht an das Kassensystem übermittelt.",order:"Meine Auswahl",added:"hinzugefügt",empty:"Deine Bestellung ist leer.",ready:"Empfehlung ist bereit",sweetBar:"Süß",freshBar:"Frisch",boldBar:"Kräftig",curiousBar:"Abenteuer",strengthHint:"Wähle die gewünschte Alkoholstärke",level0:"Ohne Alkohol",level1:"Leicht alkoholisch",level2:"Mittel",level3:"Stark",level4:"Sehr stark",baseSpirit:"Basis Spirituose",baseHint:"Wähle den Spirit als Basis",anySpirit:"Überrasch mich",liqueur:"Likör",exactMatch:"Exakter Treffer: Alle gewählten Filter werden berücksichtigt.",closeMatch:"Kein exakter Treffer – wir zeigen den passendsten verfügbaren Cocktail.",photoComing:"Cocktailfoto folgt in Kürze",saving:"Wird gespeichert…",savedOverview:"Zur heutigen Übersicht hinzugefügt",updatedOverview:"Übersicht aktualisiert",removedOverview:"Aus der heutigen Übersicht entfernt",saveChanges:"💾 Änderungen speichern",removeOverview:"Aus Übersicht entfernen",alreadySaved:"Diese unveränderte Auswahl wurde bereits gespeichert",saveFailed:"Speichern nicht möglich. Bitte erneut versuchen.",navDrinks:"Getränke",navKitchen:"Küche",drinksEyebrow:"GETRÄNKE",drinksTitle:"Spritz, Wein, Schaumwein und mehr.",drinksSearch:"Getränke suchen",kitchenEyebrow:"BAR KITCHEN",kitchenTitle:"Kleine Gerichte für einen großen Abend.",allergenNote:"Bei Fragen zu Allergenen wende dich bitte an unser Personal.",dessertEyebrow:"DESSERTS",dessertTitle:"Ein süßer Abschluss.",photoFoodComing:"Foto folgt in Kürze",allergens:"Allergene",perPiece:"pro Stück"}
 };
 const grid=document.getElementById('menuGrid'),filters=document.getElementById('filters'),search=document.getElementById('search');
+const drinksGrid=document.getElementById('drinksGrid'),drinksFilters=document.getElementById('drinksFilters'),drinksSearch=document.getElementById('drinksSearch'),foodGrid=document.getElementById('foodGrid'),dessertGrid=document.getElementById('dessertGrid');
+let currentDrinksCategory='All';
 let currentCategory='All',matches=[],idx=0,currentRec=null,orderList=[],lang=activeLang();
 
 function t(k){return i18n[lang][k]||k}
@@ -16,7 +20,7 @@ function applyLanguage(){
  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>el.placeholder=t(el.dataset.i18nPlaceholder));
  document.getElementById('lang').textContent=lang==='en'?'DE':'EN';
- renderFilters();renderMenu();renderCart();if(currentRec)show(currentRec,false);
+ renderFilters();renderMenu();renderCatalog();renderCart();if(currentRec)show(currentRec,false);
 }
 
 function photoSlug(name){
@@ -35,6 +39,31 @@ function renderMenu(){
   return (currentCategory==='All'||d.category===currentCategory)&&(!q||hay.includes(q))
  }).sort(bySort);
  grid.innerHTML=list.map(d=>`<article class="menu-card">${photoMarkup(d,'menu-photo')}<span class="cat">${lang==='de'?d.category_de:d.category}</span><span class="price">${euro(d.price)}</span><h3>${d.name}</h3><p>${lang==='de'?d.desc_de:d.desc}</p><div class="tags">${(lang==='de'?d.tags_de:d.tags).map(x=>`<span>${x}</span>`).join('')}</div><button class="card-order" data-name="${d.name}">${t('addOrder')}</button></article>`).join('');
+}
+function genericPhotoMarkup(d){
+ const src=d.image||'';
+ return `<div class="catalog-photo"><img src="${src}" alt="${d.name}" loading="lazy" onload="this.parentElement.classList.add('has-photo')" onerror="this.remove()"><div class="photo-placeholder" aria-hidden="true"><img src="logo.png" alt=""><span>${t('photoFoodComing')}</span></div></div>`;
+}
+function drinksCategoryLabel(cat){if(cat==='All')return lang==='de'?'Alle':'All';const x=catalogItems.find(i=>i.category===cat);return lang==='de'?(x?.category_de||cat):cat}
+function renderCatalog(){
+ if(!drinksGrid)return;
+ const drinkItems=catalogItems.filter(i=>!['Kitchen','Dessert'].includes(i.category));
+ const cats=['All',...new Set(drinkItems.map(i=>i.category))];
+ drinksFilters.innerHTML=cats.map(c=>`<button class="${c===currentDrinksCategory?'active':''}" data-drink-cat="${c}">${drinksCategoryLabel(c)}</button>`).join('');
+ const q=(drinksSearch?.value||'').toLowerCase().trim();
+ const visible=drinkItems.filter(i=>(currentDrinksCategory==='All'||i.category===currentDrinksCategory)&&(!q||[i.name,i.category,i.category_de,i.desc,i.desc_de,i.volume].join(' ').toLowerCase().includes(q)));
+ drinksGrid.innerHTML=visible.map(productCard).join('');
+ foodGrid.innerHTML=catalogItems.filter(i=>i.category==='Kitchen').map(productCard).join('');
+ dessertGrid.innerHTML=catalogItems.filter(i=>i.category==='Dessert').map(productCard).join('');
+}
+function productCard(d){
+ const desc=lang==='de'?d.desc_de:d.desc;
+ const vol=d.volume?`<span class="product-volume">${d.volume}</span>`:'';
+ const allerg=d.allergens?`<p class="allergens"><b>${t('allergens')}:</b> ${d.allergens}</p>`:'';
+ const isFood=['Kitchen','Dessert'].includes(d.category);
+ const kind=isFood?'product-card--photo':'product-card--compact';
+ const photo=isFood?genericPhotoMarkup(d):'';
+ return `<article class="product-card ${kind}">${photo}<div class="product-body"><div class="product-top"><span class="cat">${lang==='de'?d.category_de:d.category}</span>${vol}</div><h3>${d.name}</h3>${desc?`<p>${desc}</p>`:''}${allerg}<div class="product-action"><strong>${euro(d.price)}</strong><button class="card-order" data-item-id="${d.id}">${t('addOrder')}</button></div></div></article>`;
 }
 function normaliseDrink(d){
  if(typeof d.alcoholLevel!=="number")d.alcoholLevel=d.category==='Zero'?0:Math.max(1,Math.min(4,d.strength||2));
@@ -82,15 +111,18 @@ function loadOrder(){
     else orderList=parsed.items||[]
   }catch(e){orderList=[]}
 }
-function addToCart(name){const d=drinks.find(x=>x.name===name);if(!d)return;const f=orderList.find(x=>x.name===name);f?f.qty++:orderList.push({...d,qty:1});saveOrder();renderCart();toast(`${name} ${t('added')}`)}
-function changeQty(name,delta){const f=orderList.find(x=>x.name===name);if(!f)return;f.qty+=delta;if(f.qty<=0)orderList=orderList.filter(x=>x.name!==name);saveOrder();renderCart()}
-function removeItem(name){orderList=orderList.filter(x=>x.name!==name);saveOrder();renderCart()}
-function renderCart(){cartItems.innerHTML=orderList.length?orderList.map(i=>`<div class="cart-item"><span>${i.name}</span><div class="qty-control"><button type="button" class="qty-btn" data-act="minus" data-name="${i.name}">−</button><b>${i.qty}</b><button type="button" class="qty-btn" data-act="plus" data-name="${i.name}">+</button></div><strong>${euro(i.price*i.qty)}</strong><button type="button" class="remove-btn" data-name="${i.name}" aria-label="Remove">×</button></div>`).join(''):`<p>${t('empty')}</p>`;cartTotal.textContent=euro(orderList.reduce((s,i)=>s+i.price*i.qty,0));cartCount.textContent=orderList.reduce((s,i)=>s+i.qty,0);updateOverviewButton()}
+function itemKey(x){return x.id||x.name}
+function addItemToCart(d){if(!d)return;const key=itemKey(d);const f=orderList.find(x=>itemKey(x)===key);f?f.qty++:orderList.push({...d,qty:1});saveOrder();renderCart();toast(`${d.name} ${t('added')}`)}
+function addToCart(name){addItemToCart(drinks.find(x=>x.name===name))}
+function addToCartById(id){addItemToCart(allItems.find(x=>x.id===id))}
+function changeQty(key,delta){const f=orderList.find(x=>itemKey(x)===key);if(!f)return;f.qty+=delta;if(f.qty<=0)orderList=orderList.filter(x=>itemKey(x)!==key);saveOrder();renderCart()}
+function removeItem(key){orderList=orderList.filter(x=>itemKey(x)!==key);saveOrder();renderCart()}
+function renderCart(){cartItems.innerHTML=orderList.length?orderList.map(i=>`<div class="cart-item"><span><small>${i.itemType||i.category||''}</small>${i.name}</span><div class="qty-control"><button type="button" class="qty-btn" data-act="minus" data-key="${itemKey(i)}">−</button><b>${i.qty}</b><button type="button" class="qty-btn" data-act="plus" data-key="${itemKey(i)}">+</button></div><strong>${euro(i.price*i.qty)}</strong><button type="button" class="remove-btn" data-key="${itemKey(i)}" aria-label="Remove">×</button></div>`).join(''):`<p>${t('empty')}</p>`;const total=orderList.reduce((s,i)=>s+i.price*i.qty,0);cartTotal.textContent=euro(total);cartCount.textContent=orderList.reduce((s,i)=>s+i.qty,0);const fabTotal=document.getElementById('cartFabTotal');if(fabTotal)fabTotal.textContent=euro(total);updateOverviewButton()}
 cartItems.addEventListener('click',e=>{
   const qtyBtn=e.target.closest('.qty-btn');
-  if(qtyBtn){changeQty(qtyBtn.dataset.name,qtyBtn.dataset.act==='plus'?1:-1);return}
+  if(qtyBtn){changeQty(qtyBtn.dataset.key,qtyBtn.dataset.act==='plus'?1:-1);return}
   const rmBtn=e.target.closest('.remove-btn');
-  if(rmBtn){removeItem(rmBtn.dataset.name)}
+  if(rmBtn){removeItem(rmBtn.dataset.key)}
 });
 const tasteInputs=[...document.querySelectorAll('input[name="taste"]')];
 function updateTasteLimitState(){const count=tasteInputs.filter(i=>i.checked).length;tasteInputs.forEach(i=>{const blocked=count>=3&&!i.checked;i.disabled=blocked;i.closest('label').classList.toggle('limit-blocked',blocked)})}
@@ -98,11 +130,35 @@ tasteInputs.forEach(i=>i.addEventListener('change',updateTasteLimitState));updat
 quiz.addEventListener('submit',e=>{e.preventDefault();recommend()});another.addEventListener('click',()=>{idx=(idx+1)%matches.length;show(matches[idx],true)});orderBtn.addEventListener('click',()=>currentRec&&addToCart(currentRec.name));
 filters.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;currentCategory=b.dataset.cat;renderFilters();renderMenu()});
 search.addEventListener('input',renderMenu);grid.addEventListener('click',e=>{const b=e.target.closest('[data-name]');if(b)addToCart(b.dataset.name)});
+if(drinksFilters)drinksFilters.addEventListener('click',e=>{const b=e.target.closest('[data-drink-cat]');if(!b)return;currentDrinksCategory=b.dataset.drinkCat;renderCatalog()});
+if(drinksSearch)drinksSearch.addEventListener('input',renderCatalog);
+[drinksGrid,foodGrid,dessertGrid].filter(Boolean).forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('[data-item-id]');if(b)addToCartById(b.dataset.itemId)}));
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.go).scrollIntoView({behavior:'smooth'})));
-const navToggle=document.getElementById('navToggle'),mobileNav=document.getElementById('mobileNav');
+const navToggle=document.getElementById('navToggle'),mobileNav=document.getElementById('mobileNav'),mobileNavBackdrop=document.getElementById('mobileNavBackdrop');
 if(navToggle&&mobileNav){
- navToggle.addEventListener('click',()=>{const open=mobileNav.classList.toggle('open');navToggle.classList.toggle('open',open);navToggle.setAttribute('aria-expanded',open)});
- mobileNav.querySelectorAll('button,a').forEach(el=>el.addEventListener('click',()=>{mobileNav.classList.remove('open');navToggle.classList.remove('open');navToggle.setAttribute('aria-expanded',false)}));
+ const setMobileNav=open=>{
+  mobileNav.classList.toggle('open',open);
+  navToggle.classList.toggle('open',open);
+  navToggle.setAttribute('aria-expanded',String(open));
+  mobileNav.setAttribute('aria-hidden',String(!open));
+  mobileNavBackdrop?.classList.toggle('open',open);
+  document.body.classList.toggle('nav-open',open);
+ };
+ navToggle.addEventListener('click',()=>setMobileNav(!mobileNav.classList.contains('open')));
+ mobileNavBackdrop?.addEventListener('click',()=>setMobileNav(false));
+ mobileNav.querySelectorAll('button,a').forEach(el=>el.addEventListener('click',()=>setMobileNav(false)));
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')setMobileNav(false)});
+ const navTargets=[...mobileNav.querySelectorAll('[data-go]')];
+ const sectionIds=['home','ai','menu','drinks','kitchen','rituals'];
+ const markActive=id=>{
+  navTargets.forEach(el=>el.classList.toggle('active',el.dataset.go===id));
+  document.querySelectorAll('header nav [data-go]').forEach(el=>el.classList.toggle('active',el.dataset.go===id));
+ };
+ const observer=new IntersectionObserver(entries=>{
+  const visible=entries.filter(x=>x.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+  if(visible)markActive(visible.target.id);
+ },{rootMargin:'-24% 0px -58% 0px',threshold:[0,.15,.35,.6]});
+ sectionIds.map(id=>document.getElementById(id)).filter(Boolean).forEach(section=>observer.observe(section));
 }
 document.querySelectorAll('[data-mood]').forEach(b=>b.addEventListener('click',()=>{const r=document.querySelector(`input[name="mood"][value="${b.dataset.mood}"]`);if(r)r.checked=true;document.getElementById('ai').scrollIntoView({behavior:'smooth'})}));
 const cartBackdrop=document.getElementById('cartBackdrop');
@@ -119,7 +175,7 @@ function makeRecordId(){
   const d=new Date(),pad=n=>String(n).padStart(2,'0');
   return `SIGN-${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
 }
-function orderFingerprint(){return orderList.map(i=>`${i.name}:${i.qty}`).sort().join('|')}
+function orderFingerprint(){return orderList.map(i=>`${itemKey(i)}:${i.qty}`).sort().join('|')}
 function getOverviewState(){
   try{
     const state=JSON.parse(localStorage.getItem(OVERVIEW_STATE_KEY)||'null');
@@ -150,7 +206,7 @@ async function logSelectionToLedger(){
     totalQuantity:orderList.reduce((sum,item)=>sum+item.qty,0),
     total:orderList.reduce((sum,item)=>sum+item.price*item.qty,0),
     items:orderList.map(item=>({
-      name:item.name,quantity:item.qty,unitPrice:Number(item.price)||0,
+      id:item.id||'',name:item.name,quantity:item.qty,unitPrice:Number(item.price)||0,itemType:item.itemType||'',volume:item.volume||'',
       subtotal:(Number(item.price)||0)*item.qty,
       alcoholLevel:Number(item.alcoholLevel??item.strength??0),
       baseSpirits:Array.isArray(item.baseSpirits)?item.baseSpirits:[],
@@ -173,5 +229,5 @@ async function logSelectionToLedger(){
 }
 if(confirmOrder)confirmOrder.addEventListener('click',async()=>{const ok=await logSelectionToLedger();if(ok)setTimeout(closeCartPanel,500)});
 document.getElementById('lang').addEventListener('click',()=>{lang=lang==='en'?'de':'en';setActiveLang(lang);applyLanguage()});
-window.addEventListener('the-sign-menu-updated',()=>{menuData=loadMenuData();drinks=menuData.drinks.filter(d=>d.visible!==false).map(normaliseDrink);renderFilters();renderMenu();recommend()});
-applyLanguage();recommend();loadOrder();renderCart();
+window.addEventListener('the-sign-menu-updated',()=>{menuData=loadMenuData();drinks=menuData.drinks.filter(d=>d.visible!==false).map(d=>({...normaliseDrink(d),itemType:'Cocktail'}));allItems=[...drinks,...catalogItems];renderFilters();renderMenu();renderCatalog();recommend()});
+applyLanguage();recommend();loadOrder();renderCatalog();renderCart();
