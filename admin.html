@@ -14,11 +14,12 @@
 <div id="adminApp" hidden>
 <header class="admin-head"><a class="brand" href="index.html"><img class="logo-mark" src="logo.png" alt="The Sign"><span><b>The Sign</b><small>Admin Pro V13</small></span></a><div class="admin-head-actions"><a class="admin-preview" href="member-admin.html">Member Scanner</a><a class="admin-preview" href="index.html">Menü ansehen ↗</a></div></header>
 <main class="admin-pro-shell">
-<section class="admin-pro-hero"><div><p class="eyebrow">OWNER CONTROL PANEL</p><h1>Digital Menu verwalten</h1><p>Produkte hinzufügen, Preise ändern, ausblenden und Bilder hinterlegen.</p></div><div class="admin-local-warning"><b>Wichtig</b><span>Änderungen gelten zunächst nur in diesem Browser. Für Gäste auf anderen Handys muss später eine zentrale Online-Datenbank verbunden werden.</span></div></section>
+<section class="admin-pro-hero"><div><p class="eyebrow">OWNER CONTROL PANEL</p><h1>Digital Menu verwalten</h1><p>Produkte hinzufügen, Preise ändern, ausblenden und Bilder hinterlegen.</p></div><div class="admin-local-warning"><b>Wichtig</b><span>„Lokal speichern“ aktualisiert dieses Gerät sofort. Für die öffentliche Website: „Website-Daten herunterladen“ klicken und die Datei live-menu-data.js in GitHub ersetzen.</span></div></section>
 
 <div class="admin-pro-toolbar">
   <button id="addItem" class="primary">+ Neues Produkt</button>
-  <button id="saveAll">Alle speichern</button>
+  <button id="saveAll">Lokal speichern</button>
+  <button id="publishData" class="primary">Website-Daten herunterladen</button>
   <button id="exportBtn">Backup exportieren</button>
   <label class="file-button">Backup importieren<input type="file" id="importFile" accept=".json"></label>
   <button id="resetBtn" class="danger-soft">Original wiederherstellen</button>
@@ -36,7 +37,7 @@
 <div id="status" class="admin-status">Gespeichert</div>
 </div>
 
-<script src="menu-data.js"></script><script src="v11-data.js"></script><script src="shared.js"></script>
+<script src="menu-data.js"></script><script src="live-menu-data.js"></script><script src="v11-data.js"></script><script src="shared.js"></script>
 <script>
 const ADMIN_PASSWORD_HASH="75db4c6d77590c809ea70760e0025eccb754294dca0f5455eacd1fd7528aad87";
 const ADMIN_SESSION_KEY="the-sign-admin-unlocked";
@@ -139,7 +140,14 @@ $('editorList').addEventListener('change',e=>{
  const card=e.target.closest('.admin-product'),reader=new FileReader();
  reader.onload=()=>{card.querySelector('.f-image').value=reader.result;const img=card.querySelector('.admin-thumb img');img.src=reader.result;img.style.display='block'};reader.readAsDataURL(file);
 });
-$('saveAll').onclick=()=>save();$('addItem').onclick=makeNew;
+function downloadWebsiteData(){
+ collectAll();save(false);
+ const js='// Published from The Sign Admin on '+new Date().toISOString()+'\nwindow.LIVE_MENU_DATA='+JSON.stringify(menuData,null,2)+';\nwindow.LIVE_CATALOG_DATA='+JSON.stringify(catalogData,null,2)+';\n';
+ const blob=new Blob([js],{type:'text/javascript;charset=utf-8'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download='live-menu-data.js';a.click();URL.revokeObjectURL(a.href);
+ alert('live-menu-data.js wurde erstellt. Diese Datei in GitHub hochladen und die vorhandene Datei ersetzen.');
+}
+$('saveAll').onclick=()=>save();$('publishData').onclick=downloadWebsiteData;$('addItem').onclick=makeNew;
 ['adminSearch','typeFilter','categoryFilter'].forEach(id=>$(id).addEventListener(id==='adminSearch'?'input':'change',render));
 $('exportBtn').onclick=()=>{collectAll();const payload={version:'V12',exportedAt:new Date().toISOString(),menuData,catalogData};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`the-sign-menu-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href)};
 $('importFile').onchange=async()=>{const f=$('importFile').files[0];if(!f)return;try{const p=JSON.parse(await f.text());if(!p.menuData?.drinks||!Array.isArray(p.catalogData))throw Error();menuData=p.menuData;catalogData=p.catalogData;save(false);render();alert('Backup importiert.')}catch{alert('Ungültige Backup-Datei.')}};

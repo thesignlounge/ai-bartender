@@ -18,7 +18,8 @@ THE SIGN CLUB V1.0 — 测试说明
 二、员工端
 打开 member-admin.html
 
-当前测试 Staff PIN：2580
+当前测试 Staff PIN：见 Google Sheets 的 Settings 表（STAFF_PIN 行），由 setupClubSheets() 自动生成，
+初次运行时也会弹窗显示一次。正式营业前请改成你自己的值。
 
 员工端只有：
 1. QR-Code scannen

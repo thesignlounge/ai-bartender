@@ -232,6 +232,11 @@ document.getElementById('lang').addEventListener('click',()=>{lang=lang==='en'?'
 function refreshAdminData(){menuData=loadMenuData();drinks=menuData.drinks.filter(d=>d.visible!==false).map(d=>({...normaliseDrink(d),itemType:'Cocktail'}));catalogItems=loadCatalogData().filter(d=>d.visible!==false).sort(bySort).map(d=>({...d,itemType:d.category==='Kitchen'?'Kitchen':d.category==='Dessert'?'Dessert':'Drink',tastes:[],baseSpirits:[],alcoholLevel:0}));allItems=[...drinks,...catalogItems];renderFilters();renderMenu();renderCatalog();recommend();renderCart()}
 window.addEventListener('the-sign-menu-updated',refreshAdminData);
 window.addEventListener('the-sign-catalog-updated',refreshAdminData);
+// the-sign-*-updated fires only inside the tab that called save*Data(); it never reaches
+// other tabs. The native 'storage' event is what actually notifies OTHER open tabs on the
+// same origin (e.g. index.html already open while a product is added in admin.html), so a
+// guest's already-open menu tab picks up admin changes without needing a manual reload.
+window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY||e.key===CATALOG_STORAGE_KEY)refreshAdminData()});
 applyLanguage();recommend();loadOrder();renderCatalog();renderCart();
 
 

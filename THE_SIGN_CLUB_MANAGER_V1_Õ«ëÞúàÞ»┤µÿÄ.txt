@@ -12,10 +12,11 @@ THE SIGN CLUB MANAGER V1 – 安装说明
 6. /exec 地址通常保持不变，网页里已经保留当前地址。
 7. 上传整个网站文件后，打开 club-manager.html。
 
-当前 Manager PIN：2580
-当前 Staff PIN：2580
-正式营业前请在 Manager → Settings 修改 Staff PIN。
-Manager PIN 目前需要在 Google Sheets 的 Settings 表中手动修改 MANAGER_PIN。
+重要：setupClubSheets() 现在会自动生成一次性的随机 Staff PIN 和 Manager PIN（6位字母数字），
+并在 Google Sheets 里弹窗只显示这一次——请立刻截图或抄下来，之后就只能在 Settings 表里看到。
+如果错过了，直接在 Google Sheets 的 Settings 表里查看 STAFF_PIN / MANAGER_PIN 两行的 Value 列即可。
+Staff PIN 之后可以在 Manager → Settings 里随时改；Manager PIN 目前仍需直接在 Settings 表里手动改。
+正式营业前，建议无论如何都再手动改一次这两个 PIN，不要一直用 setup 时生成的初始值。
 
 第一版 Manager 已包含：
 - Dashboard

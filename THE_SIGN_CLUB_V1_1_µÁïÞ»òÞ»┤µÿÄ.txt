@@ -2,7 +2,7 @@ THE SIGN CLUB V1.1 — 电话号码与账户管理测试
 
 客人端：member.html
 员工端：member-admin.html
-员工测试 PIN：2580
+员工测试 PIN：见 Google Sheets 的 Settings 表（STAFF_PIN 行），由 setupClubSheets() 自动生成
 
 本次新增：
 1. 注册必须填写电话号码。

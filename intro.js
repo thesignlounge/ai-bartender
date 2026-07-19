@@ -28,5 +28,5 @@
   });
 
   // About two seconds before the transition into the homepage.
-  timer = window.setTimeout(finishIntro, 5000);
+  timer = window.setTimeout(finishIntro, 2000);
 })();

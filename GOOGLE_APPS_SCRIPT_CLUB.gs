@@ -10,10 +10,36 @@ const CLUB = {
   SESSIONS: 'Sessions',
   SETTINGS: 'Settings',
   OFFERS: 'Offers',
+  SECURITY_LOG: 'SecurityLog',
   TZ: 'Europe/Vienna',
   SESSION_DAYS: 90,
   WELCOME_DAYS: 30
 };
+
+// Brute-force protection: how many failed attempts within WINDOW_SECONDS trigger a lockout,
+// and how long that lockout lasts. Manager PIN gets a stricter, longer lockout since it
+// unlocks the full member database.
+const SECURITY = {
+  MAX_ATTEMPTS: 5,
+  WINDOW_SECONDS: 900,        // 15 minutes
+  LOCK_SECONDS: 900,          // 15 minutes
+  MANAGER_MAX_ATTEMPTS: 3,
+  MANAGER_LOCK_SECONDS: 1800  // 30 minutes
+};
+
+function randomPin_(length) {
+  // Excludes 0/O/1/I/L to avoid mixups when a staff member reads or types the PIN.
+  // Utilities.getUuid() is a much stronger entropy source than Math.random(); 256 % 32 === 0
+  // so mapping each byte onto our 32-symbol alphabet introduces no modulo bias.
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  const hex = (Utilities.getUuid() + Utilities.getUuid()).replace(/-/g, '');
+  let out = '';
+  for (let i = 0; i < length; i++) {
+    const byte = parseInt(hex.substr((i * 2) % hex.length, 2), 16);
+    out += chars.charAt(byte % chars.length);
+  }
+  return out;
+}
 
 function setupClubSheets() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -23,12 +49,29 @@ function setupClubSheets() {
   setupSheet_(ss, CLUB.SESSIONS, ['Session Token','Member ID','Erstellt am','Gültig bis','Letzte Nutzung']);
   setupSheet_(ss, CLUB.SETTINGS, ['Key','Value','Beschreibung']);
   setupSheet_(ss, CLUB.OFFERS, ['Offer ID','Typ','Name DE','Name EN','Beschreibung DE','Beschreibung EN','Bild URL','Startdatum','Enddatum','Mitglieder only','Max Nutzungen','Aktiv','Drink/Produkt','Preis Mitglied','Preis Normal','Aktualisiert am']);
+  setupSheet_(ss, CLUB.SECURITY_LOG, ['Zeitpunkt','Typ','Details','Fehlversuche in Folge']);
   const settings = ss.getSheetByName(CLUB.SETTINGS);
-  upsertSetting_(settings, 'STAFF_PIN', '2580', 'Bitte vor echtem Einsatz ändern');
+  // upsertSetting_ only writes a key that doesn't exist yet, so re-running setup on an
+  // already-configured sheet never resets a PIN you've since changed.
+  const staffPin = randomPin_(6), managerPin = randomPin_(6);
+  upsertSetting_(settings, 'STAFF_PIN', staffPin, 'Automatisch generiert beim Setup – jederzeit in der Manager-App unter Settings änderbar');
   upsertSetting_(settings, 'WELCOME_DAYS', String(CLUB.WELCOME_DAYS), 'Gültigkeit Welcome Drink');
-  upsertSetting_(settings, 'MANAGER_PIN', '2580', 'Manager PIN – vor echtem Einsatz ändern');
+  upsertSetting_(settings, 'MANAGER_PIN', managerPin, 'Automatisch generiert beim Setup – nur direkt in dieser Sheet-Zeile änderbar');
+  upsertSetting_(settings, 'ALERT_EMAIL', '', 'E-Mail für Sicherheitswarnungen (leer = Konto des Script-Besitzers)');
   seedOffers_();
   SpreadsheetApp.flush();
+  try {
+    SpreadsheetApp.getUi().alert(
+      'Setup abgeschlossen',
+      'Diese PINs wurden gerade automatisch erzeugt und werden nur dieses eine Mal angezeigt ' +
+      '(danach stehen sie nur noch, versteckt, im Tab "Settings"):\n\n' +
+      'Staff PIN: ' + staffPin + '\n' +
+      'Manager PIN: ' + managerPin + '\n\n' +
+      'Bitte jetzt notieren. Die Staff PIN kannst du später jederzeit in der Club Manager App ' +
+      'unter Settings ändern; die Manager PIN nur direkt im Tab "Settings" dieser Sheet.',
+      SpreadsheetApp.getUi().ButtonSet.OK
+    );
+  } catch (err) { /* running without a bound UI (e.g. from the script editor) – check the Settings sheet instead */ }
 }
 
 function doGet() {
@@ -46,7 +89,8 @@ function doPost(e) {
       updateMarketing: updateMarketing_, verifyStaff: verifyStaff_, validateOffer: validateOffer_,
       redeemOffer: redeemOffer_, getStaffMember: getStaffMember_, addVisit: addVisit_,
       managerDashboard: managerDashboard_, listMembers: listMembers_, listOffers: listOffers_,
-      saveOffer: saveOffer_, getManagerSettings: getManagerSettings_, updateManagerSetting: updateManagerSetting_
+      saveOffer: saveOffer_, getManagerSettings: getManagerSettings_, updateManagerSetting: updateManagerSetting_,
+      listSecurityEvents: listSecurityEvents_
     };
     if (!handlers[action]) return json_({success:false, code:'UNKNOWN_ACTION', error:'Unbekannte Aktion.'});
     return json_(handlers[action](body));
@@ -85,8 +129,15 @@ function register_(d) {
 
 function login_(d) {
   const phone = normalizePhone_(d.phone), password = String(d.password || '');
+  const throttleKey = 'login_' + phone;
+  checkThrottle_(throttleKey);
   const row = findMemberRowByPhone_(phone);
-  if (!row || row.values[13] !== 'ACTIVE' || passwordHash_(password, row.values[8]) !== row.values[7]) fail_('LOGIN_INVALID','Telefonnummer oder Passwort ist nicht korrekt.');
+  const ok = row && row.values[13] === 'ACTIVE' && passwordHash_(password, row.values[8]) === row.values[7];
+  if (!ok) {
+    registerFailure_(throttleKey, 'MEMBER_LOGIN', 'Telefonnummer: ' + phone, SECURITY.MAX_ATTEMPTS, SECURITY.LOCK_SECONDS);
+    fail_('LOGIN_INVALID','Telefonnummer oder Passwort ist nicht korrekt.');
+  }
+  clearFailures_(throttleKey);
   const token = createSession_(row.values[0]);
   return {success:true, token, member:memberObject_(row.values[0])};
 }
@@ -246,21 +297,111 @@ function saveOffer_(d) {
 
 function getManagerSettings_(d) {
   requireManager_(d.managerPin);
-  const keys=['STAFF_PIN','WELCOME_DAYS'];
+  const keys=['STAFF_PIN','WELCOME_DAYS','ALERT_EMAIL'];
   const out={}; keys.forEach(k=>out[k]=String(setting_(k)||''));
   return {success:true, settings:out};
 }
 
 function updateManagerSetting_(d) {
   requireManager_(d.managerPin);
-  const key=clean_(d.key,40), value=clean_(d.value,100);
-  if(['STAFF_PIN','WELCOME_DAYS'].indexOf(key)<0) fail_('SETTING_INVALID','Setting ist nicht erlaubt.');
+  const key=clean_(d.key,40), value=clean_(d.value,150);
+  if(['STAFF_PIN','MANAGER_PIN','WELCOME_DAYS','ALERT_EMAIL'].indexOf(key)<0) fail_('SETTING_INVALID','Setting ist nicht erlaubt.');
+  if(key==='MANAGER_PIN' && value.length<6) fail_('INVALID_INPUT','Manager PIN muss mindestens 6 Zeichen haben.');
   const s=sheet_(CLUB.SETTINGS), found=findRow_(s,1,key);
   if(found) s.getRange(found.row,2).setValue(value); else s.appendRow([key,value,'Manager update']);
   return {success:true};
 }
 
-function requireManager_(pin) { if (String(pin || '') !== String(setting_('MANAGER_PIN') || '2580')) fail_('MANAGER_AUTH','Manager PIN ist nicht korrekt.'); }
+function listSecurityEvents_(d) {
+  requireManager_(d.managerPin);
+  const rows = data_(sheet_(CLUB.SECURITY_LOG));
+  const events = rows.slice(-50).reverse().map(r => ({
+    time: r[0] instanceof Date ? r[0].toISOString() : String(r[0]),
+    type: String(r[1] || ''),
+    details: String(r[2] || ''),
+    count: Number(r[3] || 0)
+  }));
+  return {success:true, events};
+}
+
+function requireManager_(pin) {
+  checkThrottle_('managerpin');
+  const expected = String(setting_('MANAGER_PIN') || '');
+  if (!expected || String(pin || '') !== expected) {
+    registerFailure_('managerpin', 'MANAGER_PIN', 'Falsche Manager-PIN eingegeben', SECURITY.MANAGER_MAX_ATTEMPTS, SECURITY.MANAGER_LOCK_SECONDS);
+    fail_('MANAGER_AUTH','Manager PIN ist nicht korrekt.');
+  }
+  clearFailures_('managerpin');
+}
+
+// --- Brute-force protection -------------------------------------------------
+// checkThrottle_ blocks the request outright if this key is currently locked out.
+// registerFailure_ counts a failed attempt in a rolling window and, once the
+// threshold is hit, locks the key and emails an alert. clearFailures_ resets the
+// counter (and the escalation strikes) after a successful attempt.
+//
+// Lockout duration escalates per repeat offender: 15m -> 1h -> 4h -> 6h (capped —
+// CacheService can't hold a key past 6h). Without this, someone could just wait out
+// a fixed lockout and keep re-triggering it indefinitely to lock staff out at will.
+function checkThrottle_(key) {
+  if (CacheService.getScriptCache().get('lock_' + key)) {
+    fail_('RATE_LIMITED', 'Zu viele fehlgeschlagene Versuche. Bitte in einigen Minuten erneut versuchen.');
+  }
+}
+function escalatedLockSeconds_(key, baseSeconds) {
+  const props = PropertiesService.getScriptProperties();
+  const strikeKey = 'strikes_' + key;
+  const strikes = Math.min(Number(props.getProperty(strikeKey) || 0) + 1, 4);
+  props.setProperty(strikeKey, String(strikes));
+  return Math.min(baseSeconds * Math.pow(4, strikes - 1), 21600); // 21600s = 6h, the CacheService max
+}
+function registerFailure_(key, type, details, maxAttempts, lockSeconds) {
+  const cache = CacheService.getScriptCache();
+  const countKey = 'count_' + key;
+  const count = (Number(cache.get(countKey)) || 0) + 1;
+  cache.put(countKey, String(count), SECURITY.WINDOW_SECONDS);
+  logSecurity_(type, details, count);
+  if (count >= maxAttempts) {
+    const actualLockSeconds = escalatedLockSeconds_(key, lockSeconds);
+    cache.put('lock_' + key, '1', actualLockSeconds);
+    cache.remove(countKey);
+    sendSecurityAlert_(key, type, details, count, actualLockSeconds);
+  }
+}
+function clearFailures_(key) {
+  CacheService.getScriptCache().remove('count_' + key);
+  PropertiesService.getScriptProperties().deleteProperty('strikes_' + key);
+}
+function logSecurity_(type, details, count) {
+  try { sheet_(CLUB.SECURITY_LOG).appendRow([new Date(), type, details, count]); } catch (err) { /* never let logging break the request */ }
+}
+function alertEmail_() {
+  const configured = String(setting_('ALERT_EMAIL') || '').trim();
+  if (configured) return configured;
+  try { return Session.getEffectiveUser().getEmail(); } catch (err) { return ''; }
+}
+function sendSecurityAlert_(key, type, details, count, lockSeconds) {
+  const to = alertEmail_();
+  if (!to) return;
+  // At most one email per key per hour, so someone repeatedly tripping the lockout
+  // can't flood the inbox or burn through the daily MailApp quota.
+  const cache = CacheService.getScriptCache();
+  const throttleFlag = 'alerted_' + key;
+  if (cache.get(throttleFlag)) return;
+  cache.put(throttleFlag, '1', 3600);
+  try {
+    MailApp.sendEmail(to,
+      'THE SIGN CLUB – Verdächtige Anmeldeversuche erkannt',
+      'Es gab ' + count + ' fehlgeschlagene Versuche in Folge.\n\n' +
+      'Typ: ' + type + '\n' +
+      'Details: ' + details + '\n' +
+      'Zeitpunkt: ' + new Date() + '\n\n' +
+      'Der Zugang wurde für ' + Math.round(lockSeconds / 60) + ' Minuten gesperrt. ' +
+      'Bei wiederholten Versuchen verlängert sich die Sperre automatisch. ' +
+      'Falls das nicht du oder dein Team war, ändere die betroffene PIN zeitnah.'
+    );
+  } catch (err) { /* email quota or missing permission – never break the request because of this */ }
+}
 function dateKey_(v) { return v instanceof Date ? Utilities.formatDate(v,CLUB.TZ,'yyyy-MM-dd') : ''; }
 function dateOnly_(v) { return v instanceof Date ? Utilities.formatDate(v,CLUB.TZ,'yyyy-MM-dd') : (v?String(v):''); }
 function parseDate_(v) { if(!v) return ''; const d=new Date(String(v)+'T12:00:00'); return isNaN(d.getTime())?'':d; }
@@ -288,7 +429,15 @@ function requireSession_(token) {
   sheet_(CLUB.SESSIONS).getRange(i+2,5).setValue(new Date());
   return String(rows[i][1]);
 }
-function requireStaff_(pin) { if (String(pin || '') !== String(setting_('STAFF_PIN') || '2580')) fail_('STAFF_AUTH','Staff PIN ist nicht korrekt.'); }
+function requireStaff_(pin) {
+  checkThrottle_('staffpin');
+  const expected = String(setting_('STAFF_PIN') || '');
+  if (!expected || String(pin || '') !== expected) {
+    registerFailure_('staffpin', 'STAFF_PIN', 'Falsche Staff-PIN am Scanner', SECURITY.MAX_ATTEMPTS, SECURITY.LOCK_SECONDS);
+    fail_('STAFF_AUTH','Staff PIN ist nicht korrekt.');
+  }
+  clearFailures_('staffpin');
+}
 
 function findMemberRowByPhone_(phone) { return findRow_(sheet_(CLUB.MEMBERS),3,phone); }
 function findMemberRowById_(id) { return findRow_(sheet_(CLUB.MEMBERS),1,id); }

@@ -52,7 +52,8 @@
 - Sessions
 - Settings
 
-在 Settings 中默认员工 PIN 是 `2580`。正式使用前请改成新的 4–8 位 PIN。
+运行 setupClubSheets() 时会自动生成一个随机的 6 位 Staff PIN 和 Manager PIN，并弹窗显示一次——
+请立即记下。之后可在 Settings 表的 STAFF_PIN / MANAGER_PIN 行查看或修改。
 
 ## 第四步：部署为网页应用
 
@@ -124,6 +125,7 @@ API_URL: 'https://script.google.com/macros/s/你的部署编号/exec'
 - 不要公开分享 Google 表格。
 - 不要把 Apps Script 源代码里的内部设置放到社交媒体。
 - Apps Script 网页地址本身会公开接收请求，但所有注册、核销和登录判断都在服务器端执行。
-- 当前员工 PIN 是第一阶段保护，不应长期使用默认 `2580`。
+- Staff/Manager PIN 现在是 setupClubSheets() 自动生成的随机值,不再是所有人都知道的固定默认值；
+  即便如此，正式营业前仍建议再手动改一次，并且不要用同一个 PIN 长期不变。
 - 当前适合试营业和有限会员量。正式大规模运营前，应迁移到专业数据库并增加短信验证、密码找回、访问日志和更完善的账户删除流程。
 - Datenschutz 页面上线前，应补充 Google 作为数据处理服务提供方，以及真实负责人、地址、联系邮箱和保存期限。

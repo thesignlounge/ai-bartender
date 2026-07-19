@@ -4,7 +4,7 @@ function clone(obj){ return JSON.parse(JSON.stringify(obj)); }
 
 function loadMenuData(){
   const raw = localStorage.getItem(STORAGE_KEY);
-  if(!raw) return clone(window.MENU_SEED);
+  if(!raw) return clone(window.LIVE_MENU_DATA || window.MENU_SEED);
   try{
     const parsed = JSON.parse(raw);
     return parsed && parsed.drinks ? parsed : clone(window.MENU_SEED);
@@ -22,7 +22,7 @@ function resetMenuData(){ localStorage.removeItem(STORAGE_KEY); }
 
 function loadCatalogData(){
   const raw = localStorage.getItem(CATALOG_STORAGE_KEY);
-  const seed = Array.isArray(window.V11_CATALOG) ? window.V11_CATALOG : [];
+  const seed = Array.isArray(window.LIVE_CATALOG_DATA) ? window.LIVE_CATALOG_DATA : (Array.isArray(window.V11_CATALOG) ? window.V11_CATALOG : []);
   if(!raw) return clone(seed);
   try{
     const parsed = JSON.parse(raw);
